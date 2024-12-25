@@ -17,7 +17,7 @@ A minimalist, responsive web application with modern features for studying HSK (
 
 ### Website
 
-Live at [https://hskcards.app](hskcards.app)
+Live at [https://hskcards.app](https://hskcards.app)
 
 ### Desktop Controls
 - `Space`: Flip card
