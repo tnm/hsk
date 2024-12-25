@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": "^20.11.0"
+  },
   "scripts": {
     "start": "vite",
     "build": "npm ci && tsc && vite build",
