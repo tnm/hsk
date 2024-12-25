@@ -20,16 +20,19 @@ A minimalist, responsive web application with modern features for studying HSK (
 Live at [https://hskcards.app](https://hskcards.app)
 
 ### Desktop Controls
+
 - `Space`: Flip card
 - `←` `→`: Navigate between cards
 - `Esc`: Exit focus mode
 
 ### Mobile Controls
+
 - Tap to flip card
 - Swipe left/right to navigate
 - All buttons are touch-friendly
 
 ### Modes
+
 - Focus mode: Hide all buttons and navigation. Escape to exit.
 - Shuffle mode: Randomize the order of cards. Arrows still work to navigate.
 - Dark mode: Toggle with the button in the top right. Preference is saved.
@@ -39,17 +42,20 @@ Mix and match to find the best way to study for you.
 ## Getting Started on desktop
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/tnm/hsk.git
    cd hsk
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm start
    ```
@@ -59,6 +65,7 @@ Mix and match to find the best way to study for you.
 ## Development
 
 This project uses:
+
 - Vite for fast development and optimized builds
 - React 18 for the UI
 - Tailwind CSS for styling
@@ -86,7 +93,8 @@ npm run preview
 - Implement a progress tracker to show study stats
 
 ## Note on CSV format
-The vocabulary data is stored in header-less CSV files with 
+
+The vocabulary data is stored in header-less CSV files with
 character, pinyin, and English:
 
 ```
@@ -94,7 +102,7 @@ character, pinyin, and English:
 外,wài,outside
 ```
 
-You could fork and adapt for other languages. 
+You could fork and adapt for other languages.
 Please do!
 
 ## Contributing
@@ -104,4 +112,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
-
