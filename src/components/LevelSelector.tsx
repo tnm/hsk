@@ -1,6 +1,14 @@
-import { Button } from './ui/button'
+import { Button } from './ui/button';
 
-export function LevelSelector({ currentLevel, onLevelChange }) {
+interface LevelSelectorProps {
+  currentLevel: number;
+  onLevelChange: (level: number) => void;
+}
+
+export function LevelSelector({
+  currentLevel,
+  onLevelChange,
+}: LevelSelectorProps) {
   return (
     <div className="inline-flex flex-wrap justify-center gap-2 p-1 bg-secondary rounded-lg shadow-inner dark:bg-secondary/50">
       {[1, 2, 3, 4, 5, 6].map((level) => (
@@ -18,5 +26,5 @@ export function LevelSelector({ currentLevel, onLevelChange }) {
         </Button>
       ))}
     </div>
-  )
+  );
 }

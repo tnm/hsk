@@ -1,6 +1,6 @@
-import { Shuffle, Sun, Moon, Maximize2 } from 'lucide-react'
-
-import { Button } from './ui/button'
+import { Shuffle, Sun, Moon, Maximize2 } from 'lucide-react';
+import { ControlsProps } from '@/types';
+import { Button } from './ui/button';
 
 export function Controls({
   shuffleMode,
@@ -9,7 +9,7 @@ export function Controls({
   onShuffleToggle,
   onDarkModeToggle,
   onFocusModeToggle,
-}) {
+}: ControlsProps) {
   return (
     <div className="flex justify-center gap-2">
       <Button
@@ -45,5 +45,5 @@ export function Controls({
         />
       </Button>
     </div>
-  )
+  );
 }

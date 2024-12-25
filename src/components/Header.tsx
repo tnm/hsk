@@ -1,4 +1,4 @@
-import { BookOpen } from 'lucide-react'
+import { BookOpen } from 'lucide-react';
 
 export function Header() {
   return (
@@ -8,5 +8,5 @@ export function Header() {
         HSK <span className="font-light">Cards</span>
       </h1>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { cn } from '../lib/utils'
-
-import { Card, CardContent } from './ui/card'
+import { FlashcardProps } from '@/types';
+import { cn } from '../lib/utils';
+import { Card, CardContent } from './ui/card';
 
 export function Flashcard({
   isFlipped,
@@ -12,7 +12,7 @@ export function Flashcard({
   onTouchMove,
   onTouchEnd,
   focusMode,
-}) {
+}: FlashcardProps) {
   return (
     <div
       className={cn(
@@ -54,5 +54,5 @@ export function Flashcard({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
