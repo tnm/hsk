@@ -15,6 +15,10 @@ A minimalist, responsive web application with modern features for studying HSK (
 
 ## Usage
 
+### Website
+
+Live at [https://hskcards.app](https://hskcards.app)
+
 ### Desktop Controls
 - `Space`: Flip card
 - `←` `→`: Navigate between cards
@@ -73,10 +77,6 @@ This will create a `dist` directory with optimized production files.
 ```bash
 npm run preview
 ```
-
-## Website
-
-Coming very shortly.
 
 ## Ideas
 
