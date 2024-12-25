@@ -1,8 +1,13 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { NavigationProps } from '@/types';
+import { Button } from './ui/button';
 
-import { Button } from './ui/button'
-
-export function Navigation({ onPrevious, onNext, currentIndex, totalCards }) {
+export function Navigation({
+  onPrevious,
+  onNext,
+  currentIndex,
+  totalCards,
+}: NavigationProps) {
   return (
     <div className="mt-8 flex justify-between items-center px-4">
       <Button
@@ -25,5 +30,5 @@ export function Navigation({ onPrevious, onNext, currentIndex, totalCards }) {
         <ChevronRight />
       </Button>
     </div>
-  )
+  );
 }

@@ -1,51 +1,46 @@
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
+  env: { 
+    browser: true, 
+    es2020: true,
+    node: true 
   },
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
-    'plugin:import/recommended',
-    'prettier',
   ],
+  ignorePatterns: [
+    'dist',
+    '.eslintrc.cjs',
+    'postcss.config.js',
+    'tailwind.config.js',
+    'vite.config.js'
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: ['./tsconfig.json'],
     ecmaFeatures: {
       jsx: true,
     },
+    warnOnUnsupportedTypeScriptVersion: false,
+  },
+  plugins: ['react-refresh', '@typescript-eslint', 'react'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {
       version: 'detect',
     },
-    'import/resolver': {
-      alias: {
-        map: [['@', './src']],
-        extensions: ['.js', '.jsx'],
-      },
-    },
   },
-  plugins: ['react', 'react-hooks', 'import'],
-  rules: {
-    'react/prop-types': 'off', // Disable prop-types as we're not using them
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true },
-      },
-    ],
-    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    'no-console': ['warn', { allow: ['warn', 'error', 'log', 'info'] }],
-    'import/default': 'off', // Disable default export checking
-  },
-} 
+}; 
