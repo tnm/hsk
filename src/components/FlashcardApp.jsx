@@ -343,12 +343,34 @@ const FlashcardApp = () => {
           </footer>
         )}
 
-        {/* Mobile swipe indicator in focus mode */}
+        {/* Focus mode controls */}
         {focusMode && (
-          <div className="fixed bottom-4 left-0 right-0 text-center text-sm text-foreground/70 space-y-1">
-            <div>Swipe left/right to navigate</div>
-            <div>Tap to flip card</div>
-            <div className="mt-2 opacity-75">Press ESC to exit focus mode</div>
+          <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
+            <Button
+              onClick={previousCard}
+              variant="outline"
+              size="icon"
+              className="h-12 w-12 rounded-full bg-background/50 backdrop-blur-sm"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+
+            <Button
+              onClick={() => setFocusMode(false)}
+              variant="outline"
+              className="rounded-full bg-background/50 backdrop-blur-sm px-4"
+            >
+              Exit
+            </Button>
+
+            <Button
+              onClick={nextCard}
+              variant="outline"
+              size="icon"
+              className="h-12 w-12 rounded-full bg-background/50 backdrop-blur-sm"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </Button>
           </div>
         )}
       </div>
