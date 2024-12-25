@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { ChevronLeft, ChevronRight, Shuffle, Sun, Moon, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Shuffle, Sun, Moon, Maximize2, BookOpen } from 'lucide-react';
 import _ from 'lodash';
 import Papa from 'papaparse';
 import { cn } from '../lib/utils';
@@ -188,9 +188,12 @@ const FlashcardApp = () => {
       <div className="max-w-4xl mx-auto space-y-8">
         {!focusMode && (
           <header className="text-center space-y-6">
-            <h1 className="text-4xl font-bold text-foreground tracking-tight">
-              HSK Flashcards
-            </h1>
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <BookOpen className="h-6 w-6 text-primary/80" />
+              <h1 className="text-2xl font-medium tracking-tight text-foreground">
+                HSK <span className="font-light">Cards</span>
+              </h1>
+            </div>
             
             {/* HSK Level Selection */}
             <div className="inline-flex flex-wrap justify-center gap-2 p-1 bg-secondary rounded-lg shadow-inner dark:bg-secondary/50">
