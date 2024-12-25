@@ -1,4 +1,4 @@
-export function Footer({ isMobile }) {
+export function Footer() {
   return (
     <footer className="mt-12 border-t border-border pt-6 pb-4">
       <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-foreground/70">
@@ -17,9 +17,9 @@ export function Footer({ isMobile }) {
         <div className="text-center w-full sm:text-right">
           <p>HSK Standard Course Vocabulary</p>
           <p className="mt-1">
-            <a 
-              href="https://github.com/tnm/hsk" 
-              target="_blank" 
+            <a
+              href="https://github.com/tnm/hsk"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:text-primary/80 underline"
             >
@@ -30,4 +30,4 @@ export function Footer({ isMobile }) {
       </div>
     </footer>
   )
-} 
+}

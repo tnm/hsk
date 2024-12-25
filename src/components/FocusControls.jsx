@@ -1,7 +1,14 @@
-import { Button } from './ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-export function FocusControls({ onPrevious, onNext, onExit, currentIndex, totalCards }) {
+import { Button } from './ui/button'
+
+export function FocusControls({
+  onPrevious,
+  onNext,
+  onExit,
+  currentIndex,
+  totalCards,
+}) {
   return (
     <>
       <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
@@ -37,4 +44,4 @@ export function FocusControls({ onPrevious, onNext, onExit, currentIndex, totalC
       </div>
     </>
   )
-} 
+}

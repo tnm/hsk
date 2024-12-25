@@ -7,11 +7,11 @@ export function LevelSelector({ currentLevel, onLevelChange }) {
         <Button
           key={level}
           onClick={() => onLevelChange(level)}
-          variant={currentLevel === level ? "default" : "outline"}
+          variant={currentLevel === level ? 'default' : 'outline'}
           className={`w-16 sm:w-20 ${
-            currentLevel === level 
-              ? "shadow-sm"
-              : "hover:bg-gray-50 dark:hover:text-foreground"
+            currentLevel === level
+              ? 'shadow-sm'
+              : 'hover:bg-gray-50 dark:hover:text-foreground'
           }`}
         >
           HSK {level}
@@ -19,4 +19,4 @@ export function LevelSelector({ currentLevel, onLevelChange }) {
       ))}
     </div>
   )
-} 
+}

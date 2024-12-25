@@ -1,5 +1,6 @@
-import { Button } from './ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+
+import { Button } from './ui/button'
 
 export function Navigation({ onPrevious, onNext, currentIndex, totalCards }) {
   return (

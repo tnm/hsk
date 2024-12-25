@@ -1,31 +1,35 @@
-import { Card, CardContent } from './ui/card'
 import { cn } from '../lib/utils'
 
-export function Flashcard({ 
-  isFlipped, 
-  character, 
-  pinyin, 
-  meaning, 
-  onFlip, 
-  onTouchStart, 
-  onTouchMove, 
+import { Card, CardContent } from './ui/card'
+
+export function Flashcard({
+  isFlipped,
+  character,
+  pinyin,
+  meaning,
+  onFlip,
+  onTouchStart,
+  onTouchMove,
   onTouchEnd,
-  focusMode 
+  focusMode,
 }) {
   return (
-    <div className={cn(
-      "transition-all duration-500",
-      focusMode && "fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4"
-    )}>
-      <Card 
+    <div
+      className={cn(
+        'transition-all duration-500',
+        focusMode &&
+          'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4'
+      )}
+    >
+      <Card
         className={cn(
-          "transition-all duration-300",
-          "hover:shadow-md",
-          "cursor-pointer",
-          "min-h-[400px] w-full max-w-4xl",
-          "bg-card text-card-foreground",
-          "flex items-center justify-center",
-          isFlipped && "ring-2 ring-primary/20"
+          'transition-all duration-300',
+          'hover:shadow-md',
+          'cursor-pointer',
+          'min-h-[400px] w-full max-w-4xl',
+          'bg-card text-card-foreground',
+          'flex items-center justify-center',
+          isFlipped && 'ring-2 ring-primary/20'
         )}
         onClick={onFlip}
         onTouchStart={onTouchStart}
@@ -51,4 +55,4 @@ export function Flashcard({
       </Card>
     </div>
   )
-} 
+}
