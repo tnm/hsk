@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md}\"",
     "typecheck": "tsc --noEmit",
-    "postinstall": "npm run typecheck"
+    "prebuild": "tsc --noEmit"
   },
   "dependencies": {
     "clsx": "^2.1.0",
