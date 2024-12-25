@@ -7,7 +7,10 @@ import Papa from 'papaparse';
 import { cn } from '../lib/utils';
 
 const FlashcardApp = () => {
-  const [currentLevel, setCurrentLevel] = useState(1);
+  const [currentLevel, setCurrentLevel] = useState(() => {
+    const stored = localStorage.getItem('hskLevel');
+    return stored ? parseInt(stored) : 1;
+  });
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [currentDeck, setCurrentDeck] = useState([]);
@@ -126,6 +129,8 @@ const FlashcardApp = () => {
         nextCard();
       } else if (event.code === 'Escape' && focusMode) {
         setFocusMode(false);
+      } else if (event.code === 'KeyF') {
+        setFocusMode(prev => !prev);
       }
     };
     
@@ -166,10 +171,15 @@ const FlashcardApp = () => {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem('hskLevel', currentLevel);
+  }, [currentLevel]);
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-xl">Loading HSK {currentLevel}...</div>
+      <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
+        <div>Loading HSK {currentLevel}...</div>
       </div>
     );
   }
@@ -377,6 +387,12 @@ const FlashcardApp = () => {
             >
               <ChevronRight className="h-6 w-6" />
             </Button>
+          </div>
+        )}
+
+        {focusMode && (
+          <div className="fixed bottom-20 left-0 right-0 text-center text-sm text-foreground/70">
+            {currentCardIndex + 1} / {currentDeck.length}
           </div>
         )}
       </div>

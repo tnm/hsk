@@ -80,10 +80,10 @@ npm run preview
 
 ## Ideas
 
+- Add traditional characters
 - Allow users to mark cards as known/unknown for personalized practice
 - Add colors to represent each tone in Pinyin for better visual distinction
 - Implement a progress tracker to show study stats
-- Open to other ideas
 
 ## Note on CSV format
 The vocabulary data is stored in header-less CSV files with 
