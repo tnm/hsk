@@ -12,7 +12,7 @@ export function FocusControls({
   return (
     <>
       {/* Navigation controls - mobile only */}
-      <div className="fixed bottom-4 left-0 right-0 flex md:hidden justify-between items-center px-6 w-full z-[60]">
+      <div className="sm:hidden fixed bottom-8 left-0 right-0 flex justify-between items-center px-6 w-full z-[60]">
         <Button
           onClick={onPrevious}
           variant="outline"

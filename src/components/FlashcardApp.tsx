@@ -211,7 +211,12 @@ export default function FlashcardApp() {
             <Header />
             <LevelSelector
               currentLevel={currentLevel}
-              onLevelChange={setCurrentLevel}
+              onLevelChange={(level) => {
+                setCurrentLevel(level);
+                setLoading(true);
+                setIsFlipped(false);
+                setCurrentCardIndex(0);
+              }}
             />
             <Controls
               shuffleMode={shuffleMode}
