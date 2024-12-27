@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FocusControlsProps } from '@/types';
 import { Button } from './ui/button';
 
@@ -11,7 +11,8 @@ export function FocusControls({
 }: FocusControlsProps) {
   return (
     <>
-      <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
+      {/* Navigation controls - mobile only */}
+      <div className="sm:hidden fixed bottom-8 left-0 right-0 flex justify-between items-center px-6 w-full z-[60]">
         <Button
           onClick={onPrevious}
           variant="outline"
@@ -22,20 +23,24 @@ export function FocusControls({
         </Button>
 
         <Button
-          onClick={onExit}
-          variant="outline"
-          className="rounded-full bg-background/50 backdrop-blur-sm px-4"
-        >
-          Exit
-        </Button>
-
-        <Button
           onClick={onNext}
           variant="outline"
           size="icon"
           className="h-12 w-12 rounded-full bg-background/50 backdrop-blur-sm"
         >
           <ChevronRight className="h-6 w-6" />
+        </Button>
+      </div>
+
+      {/* Exit button */}
+      <div className="fixed top-6 sm:top-4 left-4 z-[60]">
+        <Button
+          onClick={onExit}
+          variant="outline"
+          size="icon"
+          className="h-10 w-10 rounded-full bg-background/50 backdrop-blur-sm"
+        >
+          <X className="h-5 w-5" />
         </Button>
       </div>
 

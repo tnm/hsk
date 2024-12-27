@@ -16,13 +16,14 @@ export function LevelSelector({
           key={level}
           onClick={() => onLevelChange(level)}
           variant={currentLevel === level ? 'default' : 'outline'}
-          className={`w-16 sm:w-20 ${
+          className={`${level === 1 ? 'w-16' : 'w-10'} sm:w-20 ${
             currentLevel === level
               ? 'shadow-sm'
               : 'hover:bg-gray-50 dark:hover:text-foreground'
           }`}
         >
-          HSK {level}
+          <span className="sm:hidden">{level === 1 ? 'HSK 1' : level}</span>
+          <span className="hidden sm:inline">HSK {level}</span>
         </Button>
       ))}
     </div>

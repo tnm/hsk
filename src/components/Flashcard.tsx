@@ -18,7 +18,7 @@ export function Flashcard({
       className={cn(
         'transition-all duration-500',
         focusMode &&
-          'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4'
+          'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4 sm:p-8 overflow-hidden'
       )}
     >
       <Card
@@ -26,9 +26,10 @@ export function Flashcard({
           'transition-all duration-300',
           'hover:shadow-md',
           'cursor-pointer',
-          'min-h-[400px] w-full max-w-4xl',
+          'min-h-[350px] sm:min-h-[400px] w-full max-w-4xl',
           'bg-card text-card-foreground',
           'flex items-center justify-center',
+          focusMode && 'mt-8 mb-10 sm:my-0',
           isFlipped && 'ring-2 ring-primary/20'
         )}
         onClick={onFlip}
@@ -38,15 +39,15 @@ export function Flashcard({
       >
         <CardContent className="w-full h-full flex items-center justify-center p-6">
           {!isFlipped ? (
-            <div className="text-8xl sm:text-[10rem] font-bold text-foreground select-none">
+            <div className="text-7xl sm:text-[10rem] font-bold text-foreground select-none">
               {character}
             </div>
           ) : (
-            <div className="text-center space-y-6 select-none">
-              <div className="text-5xl sm:text-7xl text-foreground/90">
+            <div className="text-center space-y-4 sm:space-y-6 select-none">
+              <div className="text-4xl sm:text-7xl text-foreground/90">
                 {pinyin}
               </div>
-              <div className="text-3xl sm:text-5xl text-foreground/80">
+              <div className="text-2xl sm:text-5xl text-foreground/80">
                 {meaning}
               </div>
             </div>
