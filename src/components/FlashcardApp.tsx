@@ -32,12 +32,14 @@ export default function FlashcardApp() {
   const [focusMode, setFocusMode] = useState<boolean>(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isChangingLevel, setIsChangingLevel] = useState<boolean>(false);
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const minSwipeDistance = 50;
 
   const loadVocabulary = useCallback(async () => {
     try {
-      setLoading(true);
+      setIsChangingLevel(true);
       const filePath = `/data/hsk${currentLevel}.csv`;
       console.log('Attempting to load file:', filePath);
 
@@ -46,7 +48,6 @@ export default function FlashcardApp() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const text = await response.text();
-      console.log('File content first 100 chars:', text.slice(0, 100));
 
       Papa.parse<string[]>(text, {
         header: false,
@@ -59,22 +60,28 @@ export default function FlashcardApp() {
               meaning: row[2],
             }));
           setCurrentDeck(cards);
+          setCurrentCardIndex(0);
+          setIsChangingLevel(false);
           setLoading(false);
         },
         error: (error: Error) => {
           setError(error.message);
+          setIsChangingLevel(false);
           setLoading(false);
         },
       });
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to load data');
+      setIsChangingLevel(false);
       setLoading(false);
     }
   }, [currentLevel]);
 
   useEffect(() => {
-    loadVocabulary();
-  }, [loadVocabulary]);
+    if (loading) {
+      loadVocabulary();
+    }
+  }, [loading, loadVocabulary]);
 
   const shuffleDeck = () => {
     setShuffleMode((prev) => !prev);
@@ -166,7 +173,19 @@ export default function FlashcardApp() {
     localStorage.setItem('hskLevel', String(currentLevel));
   }, [currentLevel]);
 
-  if (loading) {
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (loading && !isChangingLevel) {
+      timeout = setTimeout(() => {
+        setShowLoading(true);
+      }, 500);
+    } else {
+      setShowLoading(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [loading, isChangingLevel]);
+
+  if (showLoading) {
     return (
       <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />

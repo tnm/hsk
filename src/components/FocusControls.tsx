@@ -11,8 +11,8 @@ export function FocusControls({
 }: FocusControlsProps) {
   return (
     <>
-      {/* Mobile controls */}
-      <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
+      {/* Navigation controls - mobile only */}
+      <div className="fixed bottom-4 left-0 right-0 flex md:hidden justify-between items-center px-6 w-full z-[60]">
         <Button
           onClick={onPrevious}
           variant="outline"
@@ -32,8 +32,8 @@ export function FocusControls({
         </Button>
       </div>
 
-      {/* Exit button - shown on both mobile and desktop */}
-      <div className="fixed top-4 left-4 z-[60]">
+      {/* Exit button */}
+      <div className="fixed top-6 sm:top-4 left-4 z-[60]">
         <Button
           onClick={onExit}
           variant="outline"
