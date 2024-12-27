@@ -18,7 +18,7 @@ export function Flashcard({
       className={cn(
         'transition-all duration-500',
         focusMode &&
-          'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4'
+          'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4 sm:p-8'
       )}
     >
       <Card
@@ -29,6 +29,7 @@ export function Flashcard({
           'min-h-[400px] w-full max-w-4xl',
           'bg-card text-card-foreground',
           'flex items-center justify-center',
+          focusMode && 'mb-20 sm:mb-0',
           isFlipped && 'ring-2 ring-primary/20'
         )}
         onClick={onFlip}

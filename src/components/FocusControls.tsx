@@ -11,7 +11,8 @@ export function FocusControls({
 }: FocusControlsProps) {
   return (
     <>
-      <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
+      {/* Mobile controls */}
+      <div className="fixed bottom-4 left-0 right-0 flex sm:hidden justify-between items-center px-6 w-full">
         <Button
           onClick={onPrevious}
           variant="outline"
@@ -39,7 +40,18 @@ export function FocusControls({
         </Button>
       </div>
 
-      <div className="fixed bottom-20 left-0 right-0 text-center text-sm text-foreground/70">
+      {/* Desktop controls */}
+      <div className="fixed hidden sm:flex bottom-4 left-0 right-0 justify-center">
+        <Button
+          onClick={onExit}
+          variant="outline"
+          className="rounded-full bg-background/50 backdrop-blur-sm px-4"
+        >
+          Exit
+        </Button>
+      </div>
+
+      <div className="fixed bottom-20 sm:bottom-4 left-0 right-0 text-center text-sm text-foreground/70">
         {currentIndex + 1} / {totalCards}
       </div>
     </>
