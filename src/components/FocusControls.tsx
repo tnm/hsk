@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FocusControlsProps } from '@/types';
 import { Button } from './ui/button';
 
@@ -12,7 +12,7 @@ export function FocusControls({
   return (
     <>
       {/* Mobile controls */}
-      <div className="fixed bottom-4 left-0 right-0 flex sm:hidden justify-between items-center px-6 w-full">
+      <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6 w-full">
         <Button
           onClick={onPrevious}
           variant="outline"
@@ -20,14 +20,6 @@ export function FocusControls({
           className="h-12 w-12 rounded-full bg-background/50 backdrop-blur-sm"
         >
           <ChevronLeft className="h-6 w-6" />
-        </Button>
-
-        <Button
-          onClick={onExit}
-          variant="outline"
-          className="rounded-full bg-background/50 backdrop-blur-sm px-4"
-        >
-          Exit
         </Button>
 
         <Button
@@ -40,18 +32,19 @@ export function FocusControls({
         </Button>
       </div>
 
-      {/* Desktop controls */}
-      <div className="fixed hidden sm:flex bottom-4 left-0 right-0 justify-center">
+      {/* Exit button - shown on both mobile and desktop */}
+      <div className="fixed top-4 left-4 z-[60]">
         <Button
           onClick={onExit}
           variant="outline"
-          className="rounded-full bg-background/50 backdrop-blur-sm px-4"
+          size="icon"
+          className="h-10 w-10 rounded-full bg-background/50 backdrop-blur-sm"
         >
-          Exit
+          <X className="h-5 w-5" />
         </Button>
       </div>
 
-      <div className="fixed bottom-20 sm:bottom-4 left-0 right-0 text-center text-sm text-foreground/70">
+      <div className="fixed bottom-20 left-0 right-0 text-center text-sm text-foreground/70">
         {currentIndex + 1} / {totalCards}
       </div>
     </>
