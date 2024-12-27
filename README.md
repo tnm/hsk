@@ -37,6 +37,8 @@ Live at [https://hskcards.app](https://hskcards.app)
 - Shuffle mode: Randomize the order of cards. Arrows still work to navigate.
 - Dark mode: Toggle with the button in the top right. Preference is saved.
 
+![mobile](https://github.com/user-attachments/assets/de762f28-6e97-43c6-afcd-1109aff31d2d)
+
 Mix and match to find the best way to study for you.
 
 ## Getting Started on desktop
