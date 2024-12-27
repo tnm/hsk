@@ -24,12 +24,12 @@ Live at [https://hskcards.app](https://hskcards.app)
 - `Space`: Flip card
 - `←` `→`: Navigate between cards
 - `Esc`: Exit focus mode
+- Buttons also available
 
 ### Mobile Controls
 
 - Tap to flip card
-- Swipe left/right to navigate
-- All buttons are touch-friendly
+- Swipe left/right to navigate, or use next/previous buttons
 
 ### Modes
 
