@@ -6,7 +6,8 @@ A minimalist, responsive web application with modern features for studying HSK (
 
 - 📚 All HSK levels (1-6) vocabulary included
 - 🎯 Focus mode for distraction-free study
-- ⌨️ Natural keyboard shortcuts for quick navigation
+- ✓ Track learned/unlearned cards
+- ⌨️ Fast keyboard navigation
 - 📱 Responsive design with touch support
 - 🌗 Dark mode support
 - 🔄 Shuffle mode for randomized practice
@@ -22,22 +23,25 @@ Live at [https://hskcards.app](https://hskcards.app)
 ### Desktop Controls
 
 - <kbd>Space</kbd>: Flip card
-- <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate between cards
-- <kbd>1</kbd> - <kbd>6</kbd>: Switch HSK level
-- <kbd>f</kbd>: Toggle focus mode
+- <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate cards
+- <kbd>1</kbd>-<kbd>6</kbd>: Switch HSK level
+- <kbd>f</kbd>: Mark learned
+- <kbd>d</kbd>: Mark unlearned
+- <kbd>z</kbd>: Toggle focus mode
 - <kbd>esc</kbd>: Exit focus mode
-- Buttons also available
 
 ### Mobile Controls
 
 - Tap to flip card
-- Swipe left/right to navigate, or use next/previous buttons
+- Swipe left/right to navigate
+- Tap buttons to mark learned/unlearned
 
 ### Modes
 
-- Focus mode: Hide most buttons and settings. <kbd>esc</kbd> to exit on desktop.
-- Shuffle mode: Randomize the order of cards. Arrows still work to navigate.
+- Focus mode: Hide most buttons and settings for distraction-free study
+- Shuffle mode: Randomize the order of cards
 - Dark mode: Toggle with the button in the top right. Preference is saved.
+- Learning progress: Track which cards you've learned across sessions
 
 ![mobile](https://github.com/user-attachments/assets/de762f28-6e97-43c6-afcd-1109aff31d2d)
 
@@ -48,7 +52,7 @@ Mix and match to find the best way to study for you.
 This project uses:
 
 - Vite for fast development and optimized builds
-- React 18 for the UI
+- React
 - Tailwind CSS for styling
 - Local storage for persisting preferences
 

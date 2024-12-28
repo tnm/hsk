@@ -34,8 +34,8 @@ export default function FlashcardApp() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isChangingLevel, setIsChangingLevel] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
-  const [seenCards, setSeenCards] = useState<Set<string>>(() => {
-    const stored = localStorage.getItem(`seenCards-hsk${currentLevel}`);
+  const [knownCards, setKnownCards] = useState<Set<string>>(() => {
+    const stored = localStorage.getItem(`knownCards-hsk${currentLevel}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
 
@@ -120,6 +120,22 @@ export default function FlashcardApp() {
     setIsFlipped(false);
   }, [shuffleMode, currentDeck.length]);
 
+  const handleMarkKnown = useCallback(() => {
+    if (currentDeck[currentCardIndex]) {
+      setKnownCards((prev) =>
+        new Set(prev).add(currentDeck[currentCardIndex].character)
+      );
+    }
+  }, [currentDeck, currentCardIndex]);
+
+  const handleMarkUnknown = useCallback(() => {
+    if (currentDeck[currentCardIndex]) {
+      const newKnownCards = new Set(knownCards);
+      newKnownCards.delete(currentDeck[currentCardIndex].character);
+      setKnownCards(newKnownCards);
+    }
+  }, [currentDeck, currentCardIndex, knownCards]);
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === 'Space') {
@@ -129,12 +145,15 @@ export default function FlashcardApp() {
         handlePreviousCard();
       } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
         handleNextCard();
+      } else if (event.code === 'KeyF') {
+        handleMarkKnown();
+      } else if (event.code === 'KeyD') {
+        handleMarkUnknown();
+      } else if (event.code === 'KeyZ') {
+        setFocusMode((prev) => !prev);
       } else if (event.code === 'Escape' && focusMode) {
         setFocusMode(false);
-      } else if (event.code === 'KeyF') {
-        setFocusMode((prev) => !prev);
       } else if (event.code.match(/^Digit[1-6]$/)) {
-        // Extract the number from the key code (e.g., 'Digit1' -> 1)
         const level = parseInt(event.code.replace('Digit', ''));
         setCurrentLevel(level);
         setLoading(true);
@@ -145,7 +164,15 @@ export default function FlashcardApp() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [shuffleMode, handleNextCard, handlePreviousCard, currentDeck.length, focusMode]);
+  }, [
+    shuffleMode,
+    handleNextCard,
+    handlePreviousCard,
+    handleMarkKnown,
+    handleMarkUnknown,
+    currentDeck.length,
+    focusMode,
+  ]);
 
   useEffect(() => {
     if (darkMode) {
@@ -198,10 +225,10 @@ export default function FlashcardApp() {
 
   useEffect(() => {
     localStorage.setItem(
-      `seenCards-hsk${currentLevel}`,
-      JSON.stringify(Array.from(seenCards))
+      `knownCards-hsk${currentLevel}`,
+      JSON.stringify(Array.from(knownCards))
     );
-  }, [seenCards, currentLevel]);
+  }, [knownCards, currentLevel]);
 
   if (showLoading) {
     return (
@@ -254,17 +281,14 @@ export default function FlashcardApp() {
           meaning={currentDeck[currentCardIndex]?.meaning}
           onFlip={() => {
             setIsFlipped(!isFlipped);
-            if (currentDeck[currentCardIndex]) {
-              setSeenCards((prev) =>
-                new Set(prev).add(currentDeck[currentCardIndex].character)
-              );
-            }
           }}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           focusMode={focusMode}
-          isSeen={seenCards.has(currentDeck[currentCardIndex]?.character)}
+          isKnown={knownCards.has(currentDeck[currentCardIndex]?.character)}
+          onMarkKnown={handleMarkKnown}
+          onMarkUnknown={handleMarkUnknown}
         />
 
         {!focusMode && (
