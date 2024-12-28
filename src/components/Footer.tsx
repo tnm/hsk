@@ -5,8 +5,19 @@ export function Footer() {
         <div className="mb-4 sm:mb-0 text-center sm:text-left w-full">
           {/* Only show keyboard shortcuts on larger screens */}
           <ul className="mt-1 space-y-1 hidden sm:block">
-            <li>← → or j/k: Navigate cards</li>
-            <li>Space: Flip card</li>
+            <li>
+              <kbd>Space</kbd>: Flip card
+            </li>
+            <li>
+              <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate
+              cards
+            </li>
+            <li>
+              <kbd>f</kbd>: Mark learned • <kbd>d</kbd>: Mark unlearned
+            </li>
+            <li>
+              <kbd>z</kbd>: Toggle focus mode
+            </li>
           </ul>
           {/* Show touch instructions on mobile */}
           <ul className="mt-1 space-y-1 sm:hidden">

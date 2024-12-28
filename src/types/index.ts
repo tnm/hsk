@@ -1,17 +1,4 @@
-import { ReactNode } from 'react';
 import { ParseError } from 'papaparse';
-
-export interface BaseProps {
-  className?: string;
-  children?: ReactNode;
-}
-
-export interface InteractiveProps extends BaseProps {
-  onClick?: React.MouseEventHandler<HTMLElement>;
-  onTouchStart?: React.TouchEventHandler<HTMLElement>;
-  onTouchMove?: React.TouchEventHandler<HTMLElement>;
-  onTouchEnd?: React.TouchEventHandler<HTMLElement>;
-}
 
 export interface Card {
   character: string;
@@ -49,15 +36,12 @@ export interface FlashcardProps {
   onTouchMove: React.TouchEventHandler<HTMLDivElement>;
   onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
   focusMode: boolean;
-  isSeen?: boolean;
+  isKnown?: boolean;
+  onMarkKnown?: () => void;
+  onMarkUnknown?: () => void;
 }
 
 export interface ParseResult {
   data: string[][];
   errors: ParseError[];
-}
-
-export interface TouchCoordinates {
-  x: number;
-  y: number;
 }
