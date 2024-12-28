@@ -5,7 +5,7 @@ export function Footer() {
         <div className="mb-4 sm:mb-0 text-center sm:text-left w-full">
           {/* Only show keyboard shortcuts on larger screens */}
           <ul className="mt-1 space-y-1 hidden sm:block">
-            <li>← → Arrow keys: Navigate cards</li>
+            <li>← → or j/k: Navigate cards</li>
             <li>Space: Flip card</li>
           </ul>
           {/* Show touch instructions on mobile */}
