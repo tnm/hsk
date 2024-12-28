@@ -11,7 +11,7 @@ A minimalist, responsive web application with modern features for studying HSK (
 - 🌗 Dark mode support
 - 🔄 Shuffle mode for randomized practice
 
-<img width="1986" alt="Screenshot" src="https://github.com/user-attachments/assets/e3333b30-bad8-465e-aea9-7cfdca2676eb" />
+![Desktop screenshot](https://github.com/user-attachments/assets/bab554d1-354b-487b-93c1-b089f08c55fe)
 
 ## Usage
 
