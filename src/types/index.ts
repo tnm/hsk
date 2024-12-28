@@ -57,10 +57,10 @@ export interface NavigationProps {
   onNext: () => void;
   currentIndex: number;
   totalCards: number;
-  knownCount: number;
-  onClearLearned: () => void;
 }
 
 export interface FocusControlsProps extends NavigationProps {
   onExit: () => void;
+  knownCount: number;
+  onClearLearned: () => void;
 }
