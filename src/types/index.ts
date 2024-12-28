@@ -5,27 +5,30 @@ export interface Card {
   tags?: string[];
 }
 
-export interface DeckParser {
-  parse: (content: string) => Card[];
-  fileExtension: string;
-  name: string;
-}
-
 export interface Deck {
   id: string;
   name: string;
   path: string;
 }
 
-export interface FlashcardProps {
+export interface DeckParser {
+  parse: (content: string) => Card[];
+  fileExtension: string;
+  name: string;
+}
+
+export interface TouchHandlers {
+  onTouchStart: React.TouchEventHandler<HTMLDivElement>;
+  onTouchMove: React.TouchEventHandler<HTMLDivElement>;
+  onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
+}
+
+export interface FlashcardProps extends TouchHandlers {
   isFlipped: boolean;
   front?: string;
   back?: string;
   extra?: string;
   onFlip: () => void;
-  onTouchStart: React.TouchEventHandler<HTMLDivElement>;
-  onTouchMove: React.TouchEventHandler<HTMLDivElement>;
-  onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
   focusMode: boolean;
   isKnown?: boolean;
   onMarkKnown?: () => void;
@@ -35,7 +38,7 @@ export interface FlashcardProps {
 export interface DeckSelectorProps {
   currentDeckId: string;
   onDeckChange: (deckId: string) => void;
-  availableDecks: Deck[];
+  availableDecks: ReadonlyArray<Deck>;
 }
 
 export interface ControlsProps {

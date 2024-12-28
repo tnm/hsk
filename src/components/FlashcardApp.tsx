@@ -1,16 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
-import { Card, Deck } from '@/types';
+import type { Card, Deck } from '@/types';
 import { csvParser } from '@/services/deckParsers';
 import { Controls } from './Controls';
 import { Flashcard } from './Flashcard';
 import { FocusControls } from './FocusControls';
 import { Footer } from './Footer';
 import { Header } from './Header';
-import { LevelSelector } from './LevelSelector';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
 import { DeckSelector } from './DeckSelector';
+
+const availableDecks: Deck[] = [
+  { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
+  { id: 'hsk2', name: 'HSK 2', path: '/data/hsk2.csv' },
+  { id: 'hsk3', name: 'HSK 3', path: '/data/hsk3.csv' },
+  { id: 'hsk4', name: 'HSK 4', path: '/data/hsk4.csv' },
+  { id: 'hsk5', name: 'HSK 5', path: '/data/hsk5.csv' },
+  { id: 'hsk6', name: 'HSK 6', path: '/data/hsk6.csv' },
+];
 
 export default function FlashcardApp() {
   const [currentDeckId, setCurrentDeckId] = useState<string>(() => {
@@ -21,7 +29,7 @@ export default function FlashcardApp() {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [currentDeck, setCurrentDeck] = useState<Card[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const [shuffleMode, setShuffleMode] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const stored = localStorage.getItem('darkMode');
@@ -42,18 +50,9 @@ export default function FlashcardApp() {
 
   const minSwipeDistance = 50;
 
-  const availableDecks: Deck[] = [
-    { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
-    { id: 'hsk2', name: 'HSK 2', path: '/data/hsk2.csv' },
-    { id: 'hsk3', name: 'HSK 3', path: '/data/hsk3.csv' },
-    { id: 'hsk4', name: 'HSK 4', path: '/data/hsk4.csv' },
-    { id: 'hsk5', name: 'HSK 5', path: '/data/hsk5.csv' },
-    { id: 'hsk6', name: 'HSK 6', path: '/data/hsk6.csv' },
-  ];
-
   const loadDeck = useCallback(async () => {
     try {
-      const deck = availableDecks.find(d => d.id === currentDeckId);
+      const deck = availableDecks.find((d): d is Deck => d.id === currentDeckId);
       if (!deck) throw new Error('Deck not found');
 
       const response = await fetch(deck.path);
@@ -64,7 +63,7 @@ export default function FlashcardApp() {
       setIsChangingLevel(false);
       setLoading(false);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to load deck');
+      setError(error instanceof Error ? error : new Error('Failed to load deck'));
       setIsChangingLevel(false);
       setLoading(false);
     }
@@ -111,7 +110,9 @@ export default function FlashcardApp() {
 
   const handleMarkKnown = useCallback(() => {
     if (currentDeck[currentCardIndex]) {
-      setKnownCards(prev => new Set(prev).add(currentDeck[currentCardIndex].front));
+      setKnownCards((prev) =>
+        new Set(prev).add(currentDeck[currentCardIndex].front)
+      );
     }
   }, [currentDeck, currentCardIndex]);
 
@@ -171,12 +172,12 @@ export default function FlashcardApp() {
     localStorage.setItem('darkMode', String(darkMode));
   }, [darkMode]);
 
-  const onTouchStart = (e: React.TouchEvent) => {
+  const onTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
     setTouchEnd(null);
     setTouchStart(e.touches[0].clientX);
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
+  const onTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
     setTouchEnd(e.touches[0].clientX);
   };
 
@@ -215,7 +216,7 @@ export default function FlashcardApp() {
   }, [knownCards, currentDeckId]);
 
   if (showLoading) {
-    const currentDeck = availableDecks.find(d => d.id === currentDeckId);
+    const currentDeck = availableDecks.find((d): d is Deck => d.id === currentDeckId);
     return (
       <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
@@ -227,11 +228,15 @@ export default function FlashcardApp() {
   if (error) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="text-xl text-red-500 mb-4">{error}</div>
-        <Button onClick={() => setCurrentDeckId('hsk1')}>Return to HSK 1</Button>
+        <div className="text-xl text-red-500 mb-4">{error.message}</div>
+        <Button onClick={() => setCurrentDeckId('hsk1')}>
+          Return to HSK 1
+        </Button>
       </div>
     );
   }
+
+  const currentCard = currentDeck[currentCardIndex];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 dark:from-background dark:to-background/90 p-4 sm:p-8">
@@ -262,9 +267,9 @@ export default function FlashcardApp() {
 
         <Flashcard
           isFlipped={isFlipped}
-          front={currentDeck[currentCardIndex]?.front}
-          back={currentDeck[currentCardIndex]?.back}
-          extra={currentDeck[currentCardIndex]?.extra}
+          front={currentCard?.front}
+          back={currentCard?.back}
+          extra={currentCard?.extra}
           onFlip={() => {
             setIsFlipped(!isFlipped);
           }}
@@ -272,7 +277,7 @@ export default function FlashcardApp() {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           focusMode={focusMode}
-          isKnown={knownCards.has(currentDeck[currentCardIndex]?.front)}
+          isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}
           onMarkUnknown={handleMarkUnknown}
         />

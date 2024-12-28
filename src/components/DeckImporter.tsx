@@ -6,7 +6,9 @@ interface DeckImporterProps {
 }
 
 export function DeckImporter({ onDeckLoad }: DeckImporterProps) {
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -17,11 +19,7 @@ export function DeckImporter({ onDeckLoad }: DeckImporterProps) {
 
   return (
     <div>
-      <input
-        type="file"
-        accept=".csv,.txt"
-        onChange={handleFileUpload}
-      />
+      <input type="file" accept=".csv,.txt" onChange={handleFileUpload} />
     </div>
   );
-} 
+}

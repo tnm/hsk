@@ -14,4 +14,4 @@ export const csvParser: DeckParser = {
         extra: row[2],
       }));
   },
-}; 
+};

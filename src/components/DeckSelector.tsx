@@ -1,7 +1,11 @@
-import { Deck, DeckSelectorProps } from '@/types';
+import { DeckSelectorProps } from '@/types';
 import { Button } from './ui/button';
 
-export function DeckSelector({ currentDeckId, onDeckChange, availableDecks }: DeckSelectorProps) {
+export function DeckSelector({
+  currentDeckId,
+  onDeckChange,
+  availableDecks,
+}: DeckSelectorProps) {
   return (
     <div className="flex gap-2 justify-center">
       {availableDecks.map((deck) => (
@@ -16,4 +20,4 @@ export function DeckSelector({ currentDeckId, onDeckChange, availableDecks }: De
       ))}
     </div>
   );
-} 
+}
