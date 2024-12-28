@@ -12,6 +12,7 @@ export function Flashcard({
   onTouchMove,
   onTouchEnd,
   focusMode,
+  isSeen,
 }: FlashcardProps) {
   return (
     <div
@@ -30,13 +31,19 @@ export function Flashcard({
           'bg-card text-card-foreground',
           'flex items-center justify-center',
           focusMode && 'mt-8 mb-10 sm:my-0',
-          isFlipped && 'ring-2 ring-primary/20'
+          isFlipped && 'ring-2 ring-primary/20',
+          isSeen && 'border-primary/20'
         )}
         onClick={onFlip}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
+        {isSeen && (
+          <div className="absolute top-3 right-3">
+            <div className="w-2 h-2 rounded-full bg-primary/40" />
+          </div>
+        )}
         <CardContent className="w-full h-full flex items-center justify-center p-6">
           {!isFlipped ? (
             <div className="text-7xl sm:text-[10rem] font-bold text-foreground select-none">

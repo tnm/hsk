@@ -34,6 +34,10 @@ export default function FlashcardApp() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isChangingLevel, setIsChangingLevel] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
+  const [seenCards, setSeenCards] = useState<Set<string>>(() => {
+    const stored = localStorage.getItem(`seenCards-hsk${currentLevel}`);
+    return stored ? new Set(JSON.parse(stored)) : new Set();
+  });
 
   const minSwipeDistance = 50;
 
@@ -185,6 +189,13 @@ export default function FlashcardApp() {
     return () => clearTimeout(timeout);
   }, [loading, isChangingLevel]);
 
+  useEffect(() => {
+    localStorage.setItem(
+      `seenCards-hsk${currentLevel}`,
+      JSON.stringify(Array.from(seenCards))
+    );
+  }, [seenCards, currentLevel]);
+
   if (showLoading) {
     return (
       <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
@@ -234,11 +245,17 @@ export default function FlashcardApp() {
           character={currentDeck[currentCardIndex]?.character}
           pinyin={currentDeck[currentCardIndex]?.pinyin}
           meaning={currentDeck[currentCardIndex]?.meaning}
-          onFlip={() => setIsFlipped(!isFlipped)}
+          onFlip={() => {
+            setIsFlipped(!isFlipped);
+            if (currentDeck[currentCardIndex]) {
+              setSeenCards(prev => new Set(prev).add(currentDeck[currentCardIndex].character));
+            }
+          }}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           focusMode={focusMode}
+          isSeen={seenCards.has(currentDeck[currentCardIndex]?.character)}
         />
 
         {!focusMode && (
