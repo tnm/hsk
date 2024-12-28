@@ -31,10 +31,10 @@ export function useSwipeControls({
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
-      onNext();
+      onPrevious();
     }
     if (isRightSwipe) {
-      onPrevious();
+      onNext();
     }
   };
 
