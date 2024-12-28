@@ -1,7 +1,6 @@
 import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { NavigationProps } from '@/types';
 import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
 
 export function Navigation({
   onPrevious,
@@ -23,21 +22,11 @@ export function Navigation({
         <span className="hidden sm:inline">Previous</span>
       </Button>
       <div className="text-sm sm:text-lg text-foreground/80 font-medium flex items-center gap-2 sm:gap-4">
-        <span>
-          {currentIndex + 1}/{totalCards}
-        </span>
+        <span>{currentIndex + 1}/{totalCards}</span>
         <span className="hidden sm:inline">·</span>
         <div className="flex items-center gap-1">
           <span>
-            Learned:{' '}
-            <span
-              className={cn(
-                justMarkedKnown &&
-                  'text-green-500 dark:text-green-400 transition-colors duration-300'
-              )}
-            >
-              {knownCount}
-            </span>
+            Learned: {knownCount}
           </span>
           <Button
             variant="ghost"
