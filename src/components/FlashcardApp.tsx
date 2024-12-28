@@ -98,7 +98,7 @@ export default function FlashcardApp() {
     }
   };
 
-  const nextCard = useCallback(() => {
+  const handleNextCard = useCallback(() => {
     if (shuffleMode) {
       const nextIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(nextIndex);
@@ -108,7 +108,7 @@ export default function FlashcardApp() {
     setIsFlipped(false);
   }, [shuffleMode, currentDeck.length]);
 
-  const previousCard = useCallback(() => {
+  const handlePreviousCard = useCallback(() => {
     if (shuffleMode) {
       const prevIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(prevIndex);
@@ -126,9 +126,9 @@ export default function FlashcardApp() {
         event.preventDefault();
         setIsFlipped((prev) => !prev);
       } else if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
-        previousCard();
+        handlePreviousCard();
       } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
-        nextCard();
+        handleNextCard();
       } else if (event.code === 'Escape' && focusMode) {
         setFocusMode(false);
       } else if (event.code === 'KeyF') {
@@ -145,7 +145,7 @@ export default function FlashcardApp() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [shuffleMode, nextCard, previousCard, currentDeck.length, focusMode]);
+  }, [shuffleMode, handleNextCard, handlePreviousCard, currentDeck.length, focusMode]);
 
   useEffect(() => {
     if (darkMode) {
@@ -173,10 +173,10 @@ export default function FlashcardApp() {
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
-      nextCard();
+      handleNextCard();
     }
     if (isRightSwipe) {
-      previousCard();
+      handlePreviousCard();
     }
   };
 
@@ -269,8 +269,8 @@ export default function FlashcardApp() {
 
         {!focusMode && (
           <Navigation
-            onPrevious={previousCard}
-            onNext={nextCard}
+            onPrevious={handlePreviousCard}
+            onNext={handleNextCard}
             currentIndex={currentCardIndex}
             totalCards={currentDeck.length}
           />
@@ -280,8 +280,8 @@ export default function FlashcardApp() {
 
         {focusMode && (
           <FocusControls
-            onPrevious={previousCard}
-            onNext={nextCard}
+            onPrevious={handlePreviousCard}
+            onNext={handleNextCard}
             onExit={() => setFocusMode(false)}
             currentIndex={currentCardIndex}
             totalCards={currentDeck.length}
