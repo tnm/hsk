@@ -122,7 +122,7 @@ export default function FlashcardApp() {
   const handleMarkKnown = useCallback(() => {
     const card = visibleDeck[currentCardIndex];
     if (card) {
-      setKnownCards(prev => new Set(prev).add(card.front));
+      setKnownCards((prev) => new Set(prev).add(card.front));
       handleNextCard();
     }
   }, [currentCardIndex, visibleDeck, handleNextCard]);
