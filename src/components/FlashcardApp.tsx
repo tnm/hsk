@@ -137,6 +137,14 @@ export default function FlashcardApp() {
   }, [currentCardIndex, visibleDeck, knownCards]);
 
   useEffect(() => {
+    const preventButtonFocus = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLButtonElement) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('keydown', preventButtonFocus, true);
+
     const handleKeyPress = (event: KeyboardEvent) => {
       // Prevent space from focusing buttons
       if (event.code === 'Space') {
@@ -173,7 +181,10 @@ export default function FlashcardApp() {
     };
 
     window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener('keydown', preventButtonFocus, true);
+    };
   }, [
     shuffleMode,
     handleNextCard,

@@ -31,3 +31,19 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+
+/* Add this CSS rule to prevent type-to-focus behavior globally */
+button {
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+  -webkit-focus-ring-color: none !important;
+  user-select: none !important;
+}
+
+/* If you want to be more specific, you could target just the UI buttons */
+.ui-button {
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+  -webkit-focus-ring-color: none !important;
+  user-select: none !important;
+}
