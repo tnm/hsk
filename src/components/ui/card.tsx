@@ -1,28 +1,22 @@
 import * as React from 'react';
-import { BaseProps } from '@/types';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement>, BaseProps {}
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => (
+export function Card({ className, ...props }: CardProps) {
+  return (
     <div
-      ref={ref}
       className={cn(
-        'rounded-xl border bg-card text-card-foreground shadow',
+        'rounded-lg border bg-card text-card-foreground shadow-sm',
         className
       )}
       {...props}
     />
-  )
-);
+  );
+}
 
-Card.displayName = 'Card';
+interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const CardContent = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('p-6', className)} {...props} />
-  )
-);
-
-CardContent.displayName = 'CardContent';
+export function CardContent({ className, ...props }: CardContentProps) {
+  return <div className={cn('p-6 pt-0', className)} {...props} />;
+}

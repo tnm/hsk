@@ -6,7 +6,6 @@ export interface BaseProps {
   children?: ReactNode;
 }
 
-// Add a new interface for interactive elements
 export interface InteractiveProps extends BaseProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
   onTouchStart?: React.TouchEventHandler<HTMLElement>;
@@ -42,14 +41,15 @@ export interface FocusControlsProps extends NavigationProps {
 
 export interface FlashcardProps {
   isFlipped: boolean;
-  character: string;
-  pinyin: string;
-  meaning: string;
+  character?: string;
+  pinyin?: string;
+  meaning?: string;
   onFlip: () => void;
   onTouchStart: React.TouchEventHandler<HTMLDivElement>;
   onTouchMove: React.TouchEventHandler<HTMLDivElement>;
   onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
   focusMode: boolean;
+  isSeen?: boolean;
 }
 
 export interface ParseResult {
