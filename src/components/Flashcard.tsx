@@ -19,13 +19,14 @@ export function Flashcard({
     onSwipedRight: () => onNext(),
     preventScrollOnSwipe: focusMode,
     trackMouse: false,
-    delta: 50,
+    delta: 10,
     swipeDuration: 500,
     touchEventOptions: { passive: false },
   });
 
   return (
     <div
+      {...handlers}
       className={cn(
         'transition-all duration-500',
         focusMode &&
@@ -46,7 +47,6 @@ export function Flashcard({
           focusMode && 'mt-8 mb-10 sm:my-0'
         )}
         onClick={onFlip}
-        {...handlers}
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (
