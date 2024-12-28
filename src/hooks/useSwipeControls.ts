@@ -27,13 +27,13 @@ export function useSwipeControls({
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
-    const isForwardSwipe = distance > minSwipeDistance;
-    const isBackwardSwipe = distance < -minSwipeDistance;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isForwardSwipe) {
+    if (isLeftSwipe) {
       onNext();
     }
-    if (isBackwardSwipe) {
+    if (isRightSwipe) {
       onPrevious();
     }
   };
