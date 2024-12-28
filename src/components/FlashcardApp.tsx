@@ -10,6 +10,7 @@ import { Header } from './Header';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
 import { DeckSelector } from './DeckSelector';
+import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 
 const availableDecks: Deck[] = [
   { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
@@ -39,17 +40,12 @@ export default function FlashcardApp() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
   const [focusMode, setFocusMode] = useState<boolean>(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [isChangingLevel, setIsChangingLevel] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [knownCards, setKnownCards] = useState<Set<string>>(() => {
     const stored = localStorage.getItem(`knownCards-${currentDeckId}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
   const [unknownOnly, setUnknownOnly] = useState(false);
-
-  const minSwipeDistance = 50;
 
   const visibleDeck = unknownOnly
     ? currentDeck.filter((card) => !knownCards.has(card.front))
@@ -69,13 +65,11 @@ export default function FlashcardApp() {
       const cards = csvParser.parse(text);
       setCurrentDeck(cards);
       setCurrentCardIndex(0);
-      setIsChangingLevel(false);
       setLoading(false);
     } catch (error) {
       setError(
         error instanceof Error ? error : new Error('Failed to load deck')
       );
-      setIsChangingLevel(false);
       setLoading(false);
     }
   }, [currentDeckId]);
@@ -135,74 +129,25 @@ export default function FlashcardApp() {
     }
   }, [currentCardIndex, visibleDeck, knownCards]);
 
-  useEffect(() => {
-    const preventButtonFocus = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLButtonElement) {
-        e.preventDefault();
-      }
-    };
+  const handleChangeDeck = useCallback((level: number) => {
+    const deckId = `hsk${level}`;
+    setCurrentDeckId(deckId);
+    setLoading(true);
+    setIsFlipped(false);
+    setCurrentCardIndex(0);
+  }, []);
 
-    document.addEventListener('keydown', preventButtonFocus, true);
-
-    const handleKeyPress = (event: KeyboardEvent) => {
-      // Prevent space from focusing buttons
-      if (event.code === 'Space') {
-        event.preventDefault();
-        setIsFlipped((prev) => !prev);
-        return;
-      }
-
-      // Prevent default for other navigation keys
-      if (
-        [
-          'ArrowLeft',
-          'ArrowRight',
-          'KeyJ',
-          'KeyK',
-          'KeyF',
-          'KeyD',
-          'KeyZ',
-        ].includes(event.code)
-      ) {
-        event.preventDefault();
-      }
-
-      if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
-        handlePreviousCard();
-      } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
-        handleNextCard();
-      } else if (event.code === 'KeyF') {
-        handleMarkKnown();
-      } else if (event.code === 'KeyD') {
-        handleMarkUnknown();
-      } else if (event.code === 'KeyZ') {
-        setFocusMode((prev) => !prev);
-      } else if (event.code === 'Escape' && focusMode) {
-        setFocusMode(false);
-      } else if (event.code.match(/^Digit[1-6]$/)) {
-        const level = parseInt(event.code.replace('Digit', ''));
-        const deckId = `hsk${level}`;
-        setCurrentDeckId(deckId);
-        setLoading(true);
-        setIsFlipped(false);
-        setCurrentCardIndex(0);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-      document.removeEventListener('keydown', preventButtonFocus, true);
-    };
-  }, [
-    shuffleMode,
-    handleNextCard,
-    handlePreviousCard,
-    handleMarkKnown,
-    handleMarkUnknown,
-    currentDeck.length,
+  useKeyboardControls({
+    onFlip: () => setIsFlipped((prev) => !prev),
+    onNext: handleNextCard,
+    onPrevious: handlePreviousCard,
+    onMarkKnown: handleMarkKnown,
+    onMarkUnknown: handleMarkUnknown,
+    onToggleFocus: () => setFocusMode((prev) => !prev),
+    onChangeDeck: handleChangeDeck,
     focusMode,
-  ]);
+    onExitFocus: () => setFocusMode(false),
+  });
 
   useEffect(() => {
     if (darkMode) {
@@ -213,33 +158,16 @@ export default function FlashcardApp() {
     localStorage.setItem('darkMode', String(darkMode));
   }, [darkMode]);
 
-  const onTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const onTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
-    setTouchEnd(e.touches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isForwardSwipe = distance > minSwipeDistance;
-    const isBackwardSwipe = distance < -minSwipeDistance;
-
-    if (isForwardSwipe) {
-      handleNextCard();
-    }
-    if (isBackwardSwipe) {
-      handlePreviousCard();
-    }
-  };
+  useEffect(() => {
+    localStorage.setItem(
+      `knownCards-${currentDeckId}`,
+      JSON.stringify(Array.from(knownCards))
+    );
+  }, [knownCards, currentDeckId]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if (loading && !isChangingLevel) {
+    if (loading) {
       timeout = setTimeout(() => {
         setShowLoading(true);
       }, 500);
@@ -247,14 +175,7 @@ export default function FlashcardApp() {
       setShowLoading(false);
     }
     return () => clearTimeout(timeout);
-  }, [loading, isChangingLevel]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      `knownCards-${currentDeckId}`,
-      JSON.stringify(Array.from(knownCards))
-    );
-  }, [knownCards, currentDeckId]);
+  }, [loading]);
 
   if (showLoading) {
     const currentDeck = availableDecks.find(
@@ -320,9 +241,8 @@ export default function FlashcardApp() {
           onFlip={() => {
             setIsFlipped(!isFlipped);
           }}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
+          onNext={handleNextCard}
+          onPrevious={handlePreviousCard}
           focusMode={focusMode}
           isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}

@@ -1,6 +1,7 @@
 import { FlashcardProps } from '@/types';
 import { cn } from '../lib/utils';
 import { Card, CardContent } from './ui/card';
+import { useSwipeable } from 'react-swipeable';
 
 export function Flashcard({
   isFlipped,
@@ -8,19 +9,30 @@ export function Flashcard({
   back,
   extra,
   onFlip,
-  onTouchStart,
-  onTouchMove,
-  onTouchEnd,
+  onNext,
+  onPrevious,
   focusMode,
   isKnown,
 }: FlashcardProps) {
+  const handlers = useSwipeable({
+    onSwipedLeft: () => onPrevious(),
+    onSwipedRight: () => onNext(),
+    preventScrollOnSwipe: true,
+    trackMouse: false,
+    delta: 10,
+    swipeDuration: 500,
+    touchEventOptions: { passive: false },
+  });
+
   return (
     <div
+      {...handlers}
       className={cn(
         'transition-all duration-500',
         focusMode &&
           'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4 sm:p-8 overflow-hidden'
       )}
+      style={focusMode ? { touchAction: 'none' } : undefined}
     >
       <Card
         tabIndex={-1}
@@ -35,9 +47,6 @@ export function Flashcard({
           focusMode && 'mt-8 mb-10 sm:my-0'
         )}
         onClick={onFlip}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (

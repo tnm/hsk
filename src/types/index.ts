@@ -23,12 +23,14 @@ export interface TouchHandlers {
   onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
 }
 
-export interface FlashcardProps extends TouchHandlers {
+export interface FlashcardProps {
   isFlipped: boolean;
   front?: string;
   back?: string;
   extra?: string;
   onFlip: () => void;
+  onNext: () => void;
+  onPrevious: () => void;
   focusMode: boolean;
   isKnown?: boolean;
   onMarkKnown?: () => void;
@@ -57,10 +59,10 @@ export interface NavigationProps {
   onNext: () => void;
   currentIndex: number;
   totalCards: number;
-  knownCount: number;
-  onClearLearned: () => void;
 }
 
 export interface FocusControlsProps extends NavigationProps {
   onExit: () => void;
+  knownCount: number;
+  onClearLearned: () => void;
 }
