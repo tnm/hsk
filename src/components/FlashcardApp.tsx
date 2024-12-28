@@ -125,9 +125,9 @@ export default function FlashcardApp() {
       if (event.code === 'Space') {
         event.preventDefault();
         setIsFlipped((prev) => !prev);
-      } else if (event.code === 'ArrowLeft') {
+      } else if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
         previousCard();
-      } else if (event.code === 'ArrowRight') {
+      } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
         nextCard();
       } else if (event.code === 'Escape' && focusMode) {
         setFocusMode(false);
