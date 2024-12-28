@@ -4,9 +4,9 @@ import { Card, CardContent } from './ui/card';
 
 export function Flashcard({
   isFlipped,
-  character,
-  pinyin,
-  meaning,
+  front,
+  back,
+  extra,
   onFlip,
   onTouchStart,
   onTouchMove,
@@ -51,16 +51,18 @@ export function Flashcard({
         <CardContent className="w-full h-full flex items-center justify-center p-6">
           {!isFlipped ? (
             <div className="text-7xl sm:text-[10rem] font-bold text-foreground select-none">
-              {character}
+              {front}
             </div>
           ) : (
             <div className="text-center space-y-4 sm:space-y-6 select-none">
               <div className="text-4xl sm:text-7xl text-foreground/90">
-                {pinyin}
+                {back}
               </div>
-              <div className="text-2xl sm:text-5xl text-foreground/80">
-                {meaning}
-              </div>
+              {extra && (
+                <div className="text-2xl sm:text-5xl text-foreground/80">
+                  {extra}
+                </div>
+              )}
             </div>
           )}
         </CardContent>

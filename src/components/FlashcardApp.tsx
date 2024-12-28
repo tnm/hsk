@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import Papa, { ParseResult as PapaParseResult } from 'papaparse';
 import { useState, useEffect, useCallback } from 'react';
-import { Card } from '@/types';
+import _ from 'lodash';
+import { Card, Deck } from '@/types';
+import { csvParser } from '@/services/deckParsers';
 import { Controls } from './Controls';
 import { Flashcard } from './Flashcard';
 import { FocusControls } from './FocusControls';
@@ -10,11 +10,12 @@ import { Header } from './Header';
 import { LevelSelector } from './LevelSelector';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
+import { DeckSelector } from './DeckSelector';
 
 export default function FlashcardApp() {
-  const [currentLevel, setCurrentLevel] = useState<number>(() => {
-    const stored = localStorage.getItem('hskLevel');
-    return stored ? parseInt(stored) : 1;
+  const [currentDeckId, setCurrentDeckId] = useState<string>(() => {
+    const stored = localStorage.getItem('currentDeck');
+    return stored || 'hsk1';
   });
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -35,57 +36,45 @@ export default function FlashcardApp() {
   const [isChangingLevel, setIsChangingLevel] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [knownCards, setKnownCards] = useState<Set<string>>(() => {
-    const stored = localStorage.getItem(`knownCards-hsk${currentLevel}`);
+    const stored = localStorage.getItem(`knownCards-${currentDeckId}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
 
   const minSwipeDistance = 50;
 
-  const loadVocabulary = useCallback(async () => {
+  const availableDecks: Deck[] = [
+    { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
+    { id: 'hsk2', name: 'HSK 2', path: '/data/hsk2.csv' },
+    { id: 'hsk3', name: 'HSK 3', path: '/data/hsk3.csv' },
+    { id: 'hsk4', name: 'HSK 4', path: '/data/hsk4.csv' },
+    { id: 'hsk5', name: 'HSK 5', path: '/data/hsk5.csv' },
+    { id: 'hsk6', name: 'HSK 6', path: '/data/hsk6.csv' },
+  ];
+
+  const loadDeck = useCallback(async () => {
     try {
-      setIsChangingLevel(true);
-      const filePath = `/data/hsk${currentLevel}.csv`;
-      console.log('Attempting to load file:', filePath);
+      const deck = availableDecks.find(d => d.id === currentDeckId);
+      if (!deck) throw new Error('Deck not found');
 
-      const response = await fetch(filePath);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await fetch(deck.path);
       const text = await response.text();
-
-      Papa.parse<string[]>(text, {
-        header: false,
-        complete: (results: PapaParseResult<string[]>) => {
-          const cards: Card[] = results.data
-            .filter((row: string[]) => row.length >= 3)
-            .map((row: string[]) => ({
-              character: row[0],
-              pinyin: row[1],
-              meaning: row[2],
-            }));
-          setCurrentDeck(cards);
-          setCurrentCardIndex(0);
-          setIsChangingLevel(false);
-          setLoading(false);
-        },
-        error: (error: Error) => {
-          setError(error.message);
-          setIsChangingLevel(false);
-          setLoading(false);
-        },
-      });
+      const cards = csvParser.parse(text);
+      setCurrentDeck(cards);
+      setCurrentCardIndex(0);
+      setIsChangingLevel(false);
+      setLoading(false);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to load data');
+      setError(error instanceof Error ? error.message : 'Failed to load deck');
       setIsChangingLevel(false);
       setLoading(false);
     }
-  }, [currentLevel]);
+  }, [currentDeckId]);
 
   useEffect(() => {
     if (loading) {
-      loadVocabulary();
+      loadDeck();
     }
-  }, [loading, loadVocabulary]);
+  }, [loading, loadDeck]);
 
   const shuffleDeck = () => {
     setShuffleMode((prev) => !prev);
@@ -94,7 +83,7 @@ export default function FlashcardApp() {
       setCurrentCardIndex(0);
       setIsFlipped(false);
     } else {
-      loadVocabulary();
+      loadDeck();
     }
   };
 
@@ -122,16 +111,14 @@ export default function FlashcardApp() {
 
   const handleMarkKnown = useCallback(() => {
     if (currentDeck[currentCardIndex]) {
-      setKnownCards((prev) =>
-        new Set(prev).add(currentDeck[currentCardIndex].character)
-      );
+      setKnownCards(prev => new Set(prev).add(currentDeck[currentCardIndex].front));
     }
   }, [currentDeck, currentCardIndex]);
 
   const handleMarkUnknown = useCallback(() => {
     if (currentDeck[currentCardIndex]) {
       const newKnownCards = new Set(knownCards);
-      newKnownCards.delete(currentDeck[currentCardIndex].character);
+      newKnownCards.delete(currentDeck[currentCardIndex].front);
       setKnownCards(newKnownCards);
     }
   }, [currentDeck, currentCardIndex, knownCards]);
@@ -155,7 +142,8 @@ export default function FlashcardApp() {
         setFocusMode(false);
       } else if (event.code.match(/^Digit[1-6]$/)) {
         const level = parseInt(event.code.replace('Digit', ''));
-        setCurrentLevel(level);
+        const deckId = `hsk${level}`;
+        setCurrentDeckId(deckId);
         setLoading(true);
         setIsFlipped(false);
         setCurrentCardIndex(0);
@@ -208,10 +196,6 @@ export default function FlashcardApp() {
   };
 
   useEffect(() => {
-    localStorage.setItem('hskLevel', String(currentLevel));
-  }, [currentLevel]);
-
-  useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (loading && !isChangingLevel) {
       timeout = setTimeout(() => {
@@ -225,16 +209,17 @@ export default function FlashcardApp() {
 
   useEffect(() => {
     localStorage.setItem(
-      `knownCards-hsk${currentLevel}`,
+      `knownCards-${currentDeckId}`,
       JSON.stringify(Array.from(knownCards))
     );
-  }, [knownCards, currentLevel]);
+  }, [knownCards, currentDeckId]);
 
   if (showLoading) {
+    const currentDeck = availableDecks.find(d => d.id === currentDeckId);
     return (
       <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
-        <div>Loading HSK {currentLevel}...</div>
+        <div>Loading {currentDeck?.name}...</div>
       </div>
     );
   }
@@ -243,7 +228,7 @@ export default function FlashcardApp() {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="text-xl text-red-500 mb-4">{error}</div>
-        <Button onClick={() => setCurrentLevel(1)}>Return to HSK 1</Button>
+        <Button onClick={() => setCurrentDeckId('hsk1')}>Return to HSK 1</Button>
       </div>
     );
   }
@@ -254,14 +239,15 @@ export default function FlashcardApp() {
         {!focusMode && (
           <header className="text-center space-y-6">
             <Header />
-            <LevelSelector
-              currentLevel={currentLevel}
-              onLevelChange={(level) => {
-                setCurrentLevel(level);
+            <DeckSelector
+              currentDeckId={currentDeckId}
+              onDeckChange={(deckId) => {
+                setCurrentDeckId(deckId);
                 setLoading(true);
                 setIsFlipped(false);
                 setCurrentCardIndex(0);
               }}
+              availableDecks={availableDecks}
             />
             <Controls
               shuffleMode={shuffleMode}
@@ -276,9 +262,9 @@ export default function FlashcardApp() {
 
         <Flashcard
           isFlipped={isFlipped}
-          character={currentDeck[currentCardIndex]?.character}
-          pinyin={currentDeck[currentCardIndex]?.pinyin}
-          meaning={currentDeck[currentCardIndex]?.meaning}
+          front={currentDeck[currentCardIndex]?.front}
+          back={currentDeck[currentCardIndex]?.back}
+          extra={currentDeck[currentCardIndex]?.extra}
           onFlip={() => {
             setIsFlipped(!isFlipped);
           }}
@@ -286,7 +272,7 @@ export default function FlashcardApp() {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           focusMode={focusMode}
-          isKnown={knownCards.has(currentDeck[currentCardIndex]?.character)}
+          isKnown={knownCards.has(currentDeck[currentCardIndex]?.front)}
           onMarkKnown={handleMarkKnown}
           onMarkUnknown={handleMarkUnknown}
         />
