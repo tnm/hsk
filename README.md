@@ -33,7 +33,7 @@ Live at [https://hskcards.app](https://hskcards.app)
 
 ### Modes
 
-- Focus mode: Hide most buttons and settings. Escape to exit.
+- Focus mode: Hide most buttons and settings. <kbd>esc</kbd> to exit on desktop.
 - Shuffle mode: Randomize the order of cards. Arrows still work to navigate.
 - Dark mode: Toggle with the button in the top right. Preference is saved.
 
