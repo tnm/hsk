@@ -248,7 +248,9 @@ export default function FlashcardApp() {
           onFlip={() => {
             setIsFlipped(!isFlipped);
             if (currentDeck[currentCardIndex]) {
-              setSeenCards(prev => new Set(prev).add(currentDeck[currentCardIndex].character));
+              setSeenCards((prev) =>
+                new Set(prev).add(currentDeck[currentCardIndex].character)
+              );
             }
           }}
           onTouchStart={onTouchStart}

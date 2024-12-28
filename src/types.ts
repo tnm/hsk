@@ -9,4 +9,4 @@ export interface FlashcardProps {
   onTouchEnd: () => void;
   focusMode: boolean;
   isSeen?: boolean;
-} 
+}
