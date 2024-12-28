@@ -35,12 +35,8 @@ export interface NavigationProps {
   totalCards: number;
 }
 
-export interface FocusControlsProps {
-  onPrevious: () => void;
-  onNext: () => void;
+export interface FocusControlsProps extends NavigationProps {
   onExit: () => void;
-  currentIndex: number;
-  totalCards: number;
 }
 
 export interface FlashcardProps {
