@@ -21,9 +21,9 @@ Live at [https://hskcards.app](https://hskcards.app)
 
 ### Desktop Controls
 
-- `Space`: Flip card
-- `←` `→`: Navigate between cards
-- `Esc`: Exit focus mode
+- <kbd>Space</kbd>: Flip card
+- <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate between cards
+- <kbd>Esc</kbd>: Exit focus mode
 - Buttons also available
 
 ### Mobile Controls
@@ -40,29 +40,6 @@ Live at [https://hskcards.app](https://hskcards.app)
 ![mobile](https://github.com/user-attachments/assets/de762f28-6e97-43c6-afcd-1109aff31d2d)
 
 Mix and match to find the best way to study for you.
-
-## Getting Started on desktop
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/tnm/hsk.git
-   cd hsk
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   npm start
-   ```
-
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ## Development
 
