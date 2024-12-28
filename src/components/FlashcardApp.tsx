@@ -11,7 +11,6 @@ import { Navigation } from './Navigation';
 import { Button } from './ui/button';
 import { DeckSelector } from './DeckSelector';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
-import { useSwipeControls } from '@/hooks/useSwipeControls';
 
 const availableDecks: Deck[] = [
   { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
@@ -150,11 +149,6 @@ export default function FlashcardApp() {
     onExitFocus: () => setFocusMode(false),
   });
 
-  const touchHandlers = useSwipeControls({
-    onNext: handleNextCard,
-    onPrevious: handlePreviousCard,
-  });
-
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -247,7 +241,8 @@ export default function FlashcardApp() {
           onFlip={() => {
             setIsFlipped(!isFlipped);
           }}
-          {...touchHandlers}
+          onNext={handleNextCard}
+          onPrevious={handlePreviousCard}
           focusMode={focusMode}
           isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}

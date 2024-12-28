@@ -1,6 +1,7 @@
 import { FlashcardProps } from '@/types';
 import { cn } from '../lib/utils';
 import { Card, CardContent } from './ui/card';
+import { useSwipeable } from 'react-swipeable';
 
 export function Flashcard({
   isFlipped,
@@ -8,27 +9,20 @@ export function Flashcard({
   back,
   extra,
   onFlip,
-  onTouchStart,
-  onTouchMove,
-  onTouchEnd,
+  onNext,
+  onPrevious,
   focusMode,
   isKnown,
-  isSwiping,
 }: FlashcardProps) {
-  const touchHandlers = {
-    onTouchStart,
-    onTouchMove,
-    style: { touchAction: focusMode ? 'none' : 'pan-y' },
-  };
-
-  const handleClick = () => onFlip();
-
-  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    onTouchEnd(e);
-    if (!isSwiping) {
-      onFlip();
-    }
-  };
+  const handlers = useSwipeable({
+    onSwipedLeft: () => onPrevious(),
+    onSwipedRight: () => onNext(),
+    preventScrollOnSwipe: focusMode,
+    trackMouse: false,
+    delta: 50,
+    swipeDuration: 500,
+    touchEventOptions: { passive: false },
+  });
 
   return (
     <div
@@ -51,9 +45,8 @@ export function Flashcard({
           'focus:outline-none focus-visible:outline-none focus:ring-0',
           focusMode && 'mt-8 mb-10 sm:my-0'
         )}
-        onClick={handleClick}
-        {...touchHandlers}
-        onTouchEnd={handleTouchEnd}
+        onClick={onFlip}
+        {...handlers}
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (

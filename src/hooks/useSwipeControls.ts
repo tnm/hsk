@@ -32,7 +32,7 @@ export function useSwipeControls({
 
   const onTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
     if (!touchStart) return;
-    
+
     const x = e.touches[0].clientX;
     const y = e.touches[0].clientY;
     setTouchEnd({ x, y });

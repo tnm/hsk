@@ -23,17 +23,18 @@ export interface TouchHandlers {
   onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
 }
 
-export interface FlashcardProps extends TouchHandlers {
+export interface FlashcardProps {
   isFlipped: boolean;
   front?: string;
   back?: string;
   extra?: string;
   onFlip: () => void;
+  onNext: () => void;
+  onPrevious: () => void;
   focusMode: boolean;
   isKnown?: boolean;
   onMarkKnown?: () => void;
   onMarkUnknown?: () => void;
-  isSwiping?: boolean;
 }
 
 export interface DeckSelectorProps {
