@@ -47,11 +47,9 @@ export interface ControlsProps {
   shuffleMode: boolean;
   darkMode: boolean;
   focusMode: boolean;
-  unknownOnly: boolean;
   onShuffleToggle: () => void;
   onDarkModeToggle: () => void;
   onFocusModeToggle: () => void;
-  onUnknownOnlyToggle: () => void;
 }
 
 export interface NavigationProps {

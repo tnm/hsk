@@ -45,13 +45,8 @@ export default function FlashcardApp() {
     const stored = localStorage.getItem(`knownCards-${currentDeckId}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
-  const [unknownOnly, setUnknownOnly] = useState(false);
 
-  const visibleDeck = unknownOnly
-    ? currentDeck.filter((card) => !knownCards.has(card.front))
-    : currentDeck;
-
-  const currentCard = visibleDeck[currentCardIndex];
+  const currentCard = currentDeck[currentCardIndex];
 
   const loadDeck = useCallback(async () => {
     try {
@@ -93,41 +88,41 @@ export default function FlashcardApp() {
 
   const handleNextCard = useCallback(() => {
     if (shuffleMode) {
-      const nextIndex = Math.floor(Math.random() * visibleDeck.length);
+      const nextIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(nextIndex);
     } else {
-      setCurrentCardIndex((prev) => (prev + 1) % visibleDeck.length);
+      setCurrentCardIndex((prev) => (prev + 1) % currentDeck.length);
     }
     setIsFlipped(false);
-  }, [shuffleMode, visibleDeck.length]);
+  }, [shuffleMode, currentDeck.length]);
 
   const handlePreviousCard = useCallback(() => {
     if (shuffleMode) {
-      const prevIndex = Math.floor(Math.random() * visibleDeck.length);
+      const prevIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(prevIndex);
     } else {
       setCurrentCardIndex(
-        (prev) => (prev - 1 + visibleDeck.length) % visibleDeck.length
+        (prev) => (prev - 1 + currentDeck.length) % currentDeck.length
       );
     }
     setIsFlipped(false);
-  }, [shuffleMode, visibleDeck.length]);
+  }, [shuffleMode, currentDeck.length]);
 
   const handleMarkKnown = useCallback(() => {
-    const card = visibleDeck[currentCardIndex];
+    const card = currentDeck[currentCardIndex];
     if (card) {
       setKnownCards((prev) => new Set(prev).add(card.front));
     }
-  }, [currentCardIndex, visibleDeck]);
+  }, [currentCardIndex, currentDeck]);
 
   const handleMarkUnknown = useCallback(() => {
-    const card = visibleDeck[currentCardIndex];
+    const card = currentDeck[currentCardIndex];
     if (card) {
       const newKnownCards = new Set(knownCards);
       newKnownCards.delete(card.front);
       setKnownCards(newKnownCards);
     }
-  }, [currentCardIndex, visibleDeck, knownCards]);
+  }, [currentCardIndex, currentDeck, knownCards]);
 
   const handleChangeDeck = useCallback((level: number) => {
     const deckId = `hsk${level}`;
@@ -220,15 +215,9 @@ export default function FlashcardApp() {
               shuffleMode={shuffleMode}
               darkMode={darkMode}
               focusMode={focusMode}
-              unknownOnly={unknownOnly}
               onShuffleToggle={shuffleDeck}
               onDarkModeToggle={() => setDarkMode((prev) => !prev)}
               onFocusModeToggle={() => setFocusMode((prev) => !prev)}
-              onUnknownOnlyToggle={() => {
-                setUnknownOnly((prev) => !prev);
-                setCurrentCardIndex(0);
-                setIsFlipped(false);
-              }}
             />
           </header>
         )}
@@ -266,7 +255,7 @@ export default function FlashcardApp() {
             onNext={handleNextCard}
             onExit={() => setFocusMode(false)}
             currentIndex={currentCardIndex}
-            totalCards={visibleDeck.length}
+            totalCards={currentDeck.length}
             knownCount={knownCards.size}
             onClearLearned={() => setKnownCards(new Set())}
           />
