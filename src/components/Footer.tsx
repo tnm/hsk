@@ -18,7 +18,7 @@ export function Footer() {
           </ul>
           <ul className="mt-1 space-y-1 sm:hidden">
             <li>Tap card to flip</li>
-            <li>Use arrows to navigate</li>
+            <li>Use arrows or swipe to navigate</li>
           </ul>
         </div>
         <div className="text-center w-full sm:text-right">
