@@ -14,7 +14,6 @@ export function Controls({
     <div className="flex justify-center gap-2">
       <Button
         onClick={onShuffleToggle}
-        tabIndex={-1}
         variant={shuffleMode ? 'default' : 'secondary'}
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
@@ -30,7 +29,6 @@ export function Controls({
 
       <Button
         onClick={onDarkModeToggle}
-        tabIndex={-1}
         variant="outline"
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
@@ -39,7 +37,6 @@ export function Controls({
 
       <Button
         onClick={onFocusModeToggle}
-        tabIndex={-1}
         variant={focusMode ? 'default' : 'outline'}
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
