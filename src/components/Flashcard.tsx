@@ -17,7 +17,7 @@ export function Flashcard({
   const handlers = useSwipeable({
     onSwipedLeft: () => onPrevious(),
     onSwipedRight: () => onNext(),
-    preventScrollOnSwipe: focusMode,
+    preventScrollOnSwipe: true,
     trackMouse: false,
     delta: 10,
     swipeDuration: 500,
