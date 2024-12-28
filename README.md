@@ -6,10 +6,10 @@ A minimalist, responsive web application with modern features for studying HSK (
 
 - 📚 All HSK levels (1-6) vocabulary included
 - 🎯 Focus mode for distraction-free study
-- 🌗 Dark mode support (with auto-save preference)
-- 🔄 Shuffle mode for randomized practice
+- ⌨️ Natural keyboard shortcuts for quick navigation
 - 📱 Responsive design with touch support
-- ⌨️ Keyboard shortcuts for quick navigation
+- 🌗 Dark mode support
+- 🔄 Shuffle mode for randomized practice
 
 <img width="1986" alt="Screenshot" src="https://github.com/user-attachments/assets/e3333b30-bad8-465e-aea9-7cfdca2676eb" />
 
@@ -23,9 +23,9 @@ Live at [https://hskcards.app](https://hskcards.app)
 
 - <kbd>Space</kbd>: Flip card
 - <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate between cards
-- <kbd>1</kbd>-<kbd>6</kbd>: Switch HSK level
+- <kbd>1</kbd> - <kbd>6</kbd>: Switch HSK level
 - <kbd>f</kbd>: Toggle focus mode
-- <kbd>Esc</kbd>: Exit focus mode
+- <kbd>esc</kbd>: Exit focus mode
 - Buttons also available
 
 ### Mobile Controls
