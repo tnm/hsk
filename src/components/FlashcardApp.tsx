@@ -247,9 +247,7 @@ export default function FlashcardApp() {
           onFlip={() => {
             setIsFlipped(!isFlipped);
           }}
-          onTouchStart={touchHandlers.onTouchStart}
-          onTouchMove={touchHandlers.onTouchMove}
-          onTouchEnd={touchHandlers.onTouchEnd}
+          {...touchHandlers}
           focusMode={focusMode}
           isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}

@@ -19,7 +19,7 @@ export function Navigation({
         <span className="hidden sm:inline">Previous</span>
       </Button>
 
-      <div className="text-sm sm:text-lg text-foreground/80 font-medium">
+      <div className="text-sm sm:text-lg text-foreground/80 font-medium select-none">
         {currentIndex + 1}/{totalCards}
       </div>
 

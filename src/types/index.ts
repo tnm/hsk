@@ -33,6 +33,7 @@ export interface FlashcardProps extends TouchHandlers {
   isKnown?: boolean;
   onMarkKnown?: () => void;
   onMarkUnknown?: () => void;
+  isSwiping?: boolean;
 }
 
 export interface DeckSelectorProps {

@@ -13,7 +13,23 @@ export function Flashcard({
   onTouchEnd,
   focusMode,
   isKnown,
+  isSwiping,
 }: FlashcardProps) {
+  const touchHandlers = {
+    onTouchStart,
+    onTouchMove,
+    style: { touchAction: focusMode ? 'none' : 'pan-y' },
+  };
+
+  const handleClick = () => onFlip();
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    onTouchEnd(e);
+    if (!isSwiping) {
+      onFlip();
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -35,11 +51,9 @@ export function Flashcard({
           'focus:outline-none focus-visible:outline-none focus:ring-0',
           focusMode && 'mt-8 mb-10 sm:my-0'
         )}
-        onClick={onFlip}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        style={{ touchAction: 'none' }}
+        onClick={handleClick}
+        {...touchHandlers}
+        onTouchEnd={handleTouchEnd}
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (
