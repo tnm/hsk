@@ -138,21 +138,19 @@ export default function FlashcardApp() {
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === 'Space') {
+      if (['Space', 'ArrowLeft', 'ArrowRight', 'KeyJ', 'KeyK', 'KeyF', 'KeyD', 'KeyZ'].includes(event.code)) {
         event.preventDefault();
+      }
+
+      if (event.code === 'Space') {
         setIsFlipped((prev) => !prev);
       } else if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
-        event.preventDefault();
         handlePreviousCard();
       } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
-        event.preventDefault();
         handleNextCard();
       } else if (event.code === 'KeyF') {
-        event.preventDefault();
-        event.stopPropagation();
         handleMarkKnown();
       } else if (event.code === 'KeyD') {
-        event.preventDefault();
         handleMarkUnknown();
       } else if (event.code === 'KeyZ') {
         setFocusMode((prev) => !prev);

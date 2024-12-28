@@ -29,6 +29,7 @@ export function Controls({
 
       <Button
         onClick={onDarkModeToggle}
+        tabIndex={-1}
         variant="outline"
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
