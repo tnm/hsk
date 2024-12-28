@@ -3,7 +3,7 @@ import { cn } from '../../lib/utils';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'secondary' | 'outline';
+  variant?: 'default' | 'secondary' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   className?: string;
 }
@@ -14,6 +14,7 @@ const buttonVariants = {
     'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
   outline:
     'border border-input bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground dark:border-secondary dark:hover:bg-secondary/50 dark:hover:text-secondary-foreground',
+  ghost: 'hover:bg-accent hover:text-accent-foreground',
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

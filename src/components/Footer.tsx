@@ -3,40 +3,44 @@ export function Footer() {
     <footer className="mt-12 border-t border-border pt-6 pb-4">
       <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-foreground/70">
         <div className="mb-4 sm:mb-0 text-center sm:text-left w-full">
-          {/* Only show keyboard shortcuts on larger screens */}
           <ul className="mt-1 space-y-1 hidden sm:block">
             <li>
-              <kbd>Space</kbd>: Flip card
+              <code className="font-mono text-sm">←/→</code> or{' '}
+              <code className="font-mono text-sm">j/k</code>: Navigate cards
             </li>
             <li>
-              <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate
-              cards
+              <code className="font-mono text-sm">f</code>: Mark learned •{' '}
+              <code className="font-mono text-sm">d</code>: Mark unlearned
             </li>
             <li>
-              <kbd>f</kbd>: Mark learned • <kbd>d</kbd>: Mark unlearned
-            </li>
-            <li>
-              <kbd>z</kbd>: Toggle focus mode
+              <code className="font-mono text-sm">space</code>: Flip card
             </li>
           </ul>
-          {/* Show touch instructions on mobile */}
           <ul className="mt-1 space-y-1 sm:hidden">
             <li>Tap card to flip</li>
             <li>Use arrows to navigate</li>
           </ul>
         </div>
         <div className="text-center w-full sm:text-right">
-          <p>HSK Standard Course Vocabulary</p>
-          <p className="mt-1">
-            <a
-              href="https://github.com/tnm/hsk"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 underline"
-            >
-              View on GitHub
-            </a>
-          </p>
+          <ul className="space-y-1">
+            <li>
+              <code className="font-mono text-sm">z</code>: Toggle focus mode
+            </li>
+            <li>
+              <code className="font-mono text-sm">1</code>-
+              <code className="font-mono text-sm">6</code>: Switch deck
+            </li>
+            <li>
+              <a
+                href="https://github.com/tnm/flashcards"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 underline"
+              >
+                View on GitHub
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

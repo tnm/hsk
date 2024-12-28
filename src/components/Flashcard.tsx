@@ -4,9 +4,9 @@ import { Card, CardContent } from './ui/card';
 
 export function Flashcard({
   isFlipped,
-  character,
-  pinyin,
-  meaning,
+  front,
+  back,
+  extra,
   onFlip,
   onTouchStart,
   onTouchMove,
@@ -23,6 +23,7 @@ export function Flashcard({
       )}
     >
       <Card
+        tabIndex={-1}
         className={cn(
           'transition-all duration-300',
           'hover:shadow-md',
@@ -30,10 +31,8 @@ export function Flashcard({
           'min-h-[350px] sm:min-h-[400px] w-full max-w-4xl',
           'bg-card text-card-foreground',
           'flex items-center justify-center relative',
-          focusMode && 'mt-8 mb-10 sm:my-0',
-          isFlipped && 'ring-2 ring-primary/20',
-          isKnown && 'ring-2 ring-green-500/20',
-          !isKnown && isFlipped && 'ring-2 ring-red-500/20'
+          'focus:outline-none focus-visible:outline-none focus:ring-0',
+          focusMode && 'mt-8 mb-10 sm:my-0'
         )}
         onClick={onFlip}
         onTouchStart={onTouchStart}
@@ -51,16 +50,18 @@ export function Flashcard({
         <CardContent className="w-full h-full flex items-center justify-center p-6">
           {!isFlipped ? (
             <div className="text-7xl sm:text-[10rem] font-bold text-foreground select-none">
-              {character}
+              {front}
             </div>
           ) : (
             <div className="text-center space-y-4 sm:space-y-6 select-none">
               <div className="text-4xl sm:text-7xl text-foreground/90">
-                {pinyin}
+                {back}
               </div>
-              <div className="text-2xl sm:text-5xl text-foreground/80">
-                {meaning}
-              </div>
+              {extra && (
+                <div className="text-2xl sm:text-5xl text-foreground/80">
+                  {extra}
+                </div>
+              )}
             </div>
           )}
         </CardContent>
