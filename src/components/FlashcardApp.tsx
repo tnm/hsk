@@ -169,13 +169,13 @@ export default function FlashcardApp() {
     if (!touchStart || !touchEnd) return;
 
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
+    const isForwardSwipe = distance > minSwipeDistance;
+    const isBackwardSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe) {
+    if (isForwardSwipe) {
       handleNextCard();
     }
-    if (isRightSwipe) {
+    if (isBackwardSwipe) {
       handlePreviousCard();
     }
   };
