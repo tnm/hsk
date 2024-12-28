@@ -49,9 +49,9 @@ export interface FlashcardProps {
   pinyin?: string;
   meaning?: string;
   onFlip: () => void;
-  onTouchStart: (e: React.TouchEvent) => void;
-  onTouchMove: (e: React.TouchEvent) => void;
-  onTouchEnd: () => void;
+  onTouchStart: React.TouchEventHandler<HTMLDivElement>;
+  onTouchMove: React.TouchEventHandler<HTMLDivElement>;
+  onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
   focusMode: boolean;
   isSeen?: boolean;
 }
