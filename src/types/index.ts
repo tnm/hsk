@@ -35,20 +35,25 @@ export interface NavigationProps {
   totalCards: number;
 }
 
-export interface FocusControlsProps extends NavigationProps {
+export interface FocusControlsProps {
+  onPrevious: () => void;
+  onNext: () => void;
   onExit: () => void;
+  currentIndex: number;
+  totalCards: number;
 }
 
 export interface FlashcardProps {
   isFlipped: boolean;
-  character: string;
-  pinyin: string;
-  meaning: string;
+  character?: string;
+  pinyin?: string;
+  meaning?: string;
   onFlip: () => void;
-  onTouchStart: React.TouchEventHandler<HTMLDivElement>;
-  onTouchMove: React.TouchEventHandler<HTMLDivElement>;
-  onTouchEnd: React.TouchEventHandler<HTMLDivElement>;
+  onTouchStart: (e: React.TouchEvent) => void;
+  onTouchMove: (e: React.TouchEvent) => void;
+  onTouchEnd: () => void;
   focusMode: boolean;
+  isSeen?: boolean;
 }
 
 export interface ParseResult {
