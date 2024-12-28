@@ -154,7 +154,17 @@ export default function FlashcardApp() {
       }
 
       // Prevent default for other navigation keys
-      if (['ArrowLeft', 'ArrowRight', 'KeyJ', 'KeyK', 'KeyF', 'KeyD', 'KeyZ'].includes(event.code)) {
+      if (
+        [
+          'ArrowLeft',
+          'ArrowRight',
+          'KeyJ',
+          'KeyK',
+          'KeyF',
+          'KeyD',
+          'KeyZ',
+        ].includes(event.code)
+      ) {
         event.preventDefault();
       }
 
@@ -326,8 +336,6 @@ export default function FlashcardApp() {
             onNext={handleNextCard}
             currentIndex={currentCardIndex}
             totalCards={currentDeck.length}
-            knownCount={knownCards.size}
-            onClearLearned={() => setKnownCards(new Set())}
           />
         )}
 
