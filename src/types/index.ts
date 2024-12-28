@@ -6,7 +6,6 @@ export interface BaseProps {
   children?: ReactNode;
 }
 
-// Add a new interface for interactive elements
 export interface InteractiveProps extends BaseProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
   onTouchStart?: React.TouchEventHandler<HTMLElement>;
