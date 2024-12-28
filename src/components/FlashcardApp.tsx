@@ -47,12 +47,22 @@ export default function FlashcardApp() {
     const stored = localStorage.getItem(`knownCards-${currentDeckId}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
+  const [unknownOnly, setUnknownOnly] = useState(false);
+  const [justMarkedKnown, setJustMarkedKnown] = useState(false);
 
   const minSwipeDistance = 50;
 
+  const visibleDeck = unknownOnly
+    ? currentDeck.filter((card) => !knownCards.has(card.front))
+    : currentDeck;
+
+  const currentCard = visibleDeck[currentCardIndex];
+
   const loadDeck = useCallback(async () => {
     try {
-      const deck = availableDecks.find((d): d is Deck => d.id === currentDeckId);
+      const deck = availableDecks.find(
+        (d): d is Deck => d.id === currentDeckId
+      );
       if (!deck) throw new Error('Deck not found');
 
       const response = await fetch(deck.path);
@@ -63,7 +73,9 @@ export default function FlashcardApp() {
       setIsChangingLevel(false);
       setLoading(false);
     } catch (error) {
-      setError(error instanceof Error ? error : new Error('Failed to load deck'));
+      setError(
+        error instanceof Error ? error : new Error('Failed to load deck')
+      );
       setIsChangingLevel(false);
       setLoading(false);
     }
@@ -88,41 +100,43 @@ export default function FlashcardApp() {
 
   const handleNextCard = useCallback(() => {
     if (shuffleMode) {
-      const nextIndex = Math.floor(Math.random() * currentDeck.length);
+      const nextIndex = Math.floor(Math.random() * visibleDeck.length);
       setCurrentCardIndex(nextIndex);
     } else {
-      setCurrentCardIndex((prev) => (prev + 1) % currentDeck.length);
+      setCurrentCardIndex((prev) => (prev + 1) % visibleDeck.length);
     }
     setIsFlipped(false);
-  }, [shuffleMode, currentDeck.length]);
+  }, [shuffleMode, visibleDeck.length]);
 
   const handlePreviousCard = useCallback(() => {
     if (shuffleMode) {
-      const prevIndex = Math.floor(Math.random() * currentDeck.length);
+      const prevIndex = Math.floor(Math.random() * visibleDeck.length);
       setCurrentCardIndex(prevIndex);
     } else {
       setCurrentCardIndex(
-        (prev) => (prev - 1 + currentDeck.length) % currentDeck.length
+        (prev) => (prev - 1 + visibleDeck.length) % visibleDeck.length
       );
     }
     setIsFlipped(false);
-  }, [shuffleMode, currentDeck.length]);
+  }, [shuffleMode, visibleDeck.length]);
 
   const handleMarkKnown = useCallback(() => {
-    if (currentDeck[currentCardIndex]) {
-      setKnownCards((prev) =>
-        new Set(prev).add(currentDeck[currentCardIndex].front)
-      );
+    const card = visibleDeck[currentCardIndex];
+    if (card) {
+      setKnownCards((prev) => new Set(prev).add(card.front));
+      setJustMarkedKnown(true);
+      handleNextCard();
     }
-  }, [currentDeck, currentCardIndex]);
+  }, [currentCardIndex, visibleDeck, handleNextCard]);
 
   const handleMarkUnknown = useCallback(() => {
-    if (currentDeck[currentCardIndex]) {
+    const card = visibleDeck[currentCardIndex];
+    if (card) {
       const newKnownCards = new Set(knownCards);
-      newKnownCards.delete(currentDeck[currentCardIndex].front);
+      newKnownCards.delete(card.front);
       setKnownCards(newKnownCards);
     }
-  }, [currentDeck, currentCardIndex, knownCards]);
+  }, [currentCardIndex, visibleDeck, knownCards]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -130,12 +144,17 @@ export default function FlashcardApp() {
         event.preventDefault();
         setIsFlipped((prev) => !prev);
       } else if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
+        event.preventDefault();
         handlePreviousCard();
       } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
+        event.preventDefault();
         handleNextCard();
       } else if (event.code === 'KeyF') {
+        event.preventDefault();
+        event.stopPropagation();
         handleMarkKnown();
       } else if (event.code === 'KeyD') {
+        event.preventDefault();
         handleMarkUnknown();
       } else if (event.code === 'KeyZ') {
         setFocusMode((prev) => !prev);
@@ -215,8 +234,17 @@ export default function FlashcardApp() {
     );
   }, [knownCards, currentDeckId]);
 
+  useEffect(() => {
+    if (justMarkedKnown) {
+      const timer = setTimeout(() => setJustMarkedKnown(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [justMarkedKnown]);
+
   if (showLoading) {
-    const currentDeck = availableDecks.find((d): d is Deck => d.id === currentDeckId);
+    const currentDeck = availableDecks.find(
+      (d): d is Deck => d.id === currentDeckId
+    );
     return (
       <div className="flex flex-col gap-3 justify-center items-center min-h-screen text-foreground/80">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
@@ -235,8 +263,6 @@ export default function FlashcardApp() {
       </div>
     );
   }
-
-  const currentCard = currentDeck[currentCardIndex];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80 dark:from-background dark:to-background/90 p-4 sm:p-8">
@@ -258,9 +284,15 @@ export default function FlashcardApp() {
               shuffleMode={shuffleMode}
               darkMode={darkMode}
               focusMode={focusMode}
+              unknownOnly={unknownOnly}
               onShuffleToggle={shuffleDeck}
               onDarkModeToggle={() => setDarkMode((prev) => !prev)}
               onFocusModeToggle={() => setFocusMode((prev) => !prev)}
+              onUnknownOnlyToggle={() => {
+                setUnknownOnly((prev) => !prev);
+                setCurrentCardIndex(0);
+                setIsFlipped(false);
+              }}
             />
           </header>
         )}
@@ -280,6 +312,7 @@ export default function FlashcardApp() {
           isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}
           onMarkUnknown={handleMarkUnknown}
+          justMarkedKnown={justMarkedKnown}
         />
 
         {!focusMode && (
@@ -288,6 +321,8 @@ export default function FlashcardApp() {
             onNext={handleNextCard}
             currentIndex={currentCardIndex}
             totalCards={currentDeck.length}
+            knownCount={knownCards.size}
+            onClearLearned={() => setKnownCards(new Set())}
           />
         )}
 
@@ -299,7 +334,7 @@ export default function FlashcardApp() {
             onNext={handleNextCard}
             onExit={() => setFocusMode(false)}
             currentIndex={currentCardIndex}
-            totalCards={currentDeck.length}
+            totalCards={visibleDeck.length}
           />
         )}
       </div>

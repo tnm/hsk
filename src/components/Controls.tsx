@@ -1,4 +1,4 @@
-import { Shuffle, Sun, Moon, Maximize2 } from 'lucide-react';
+import { Shuffle, Sun, Moon, Maximize } from 'lucide-react';
 import { ControlsProps } from '@/types';
 import { Button } from './ui/button';
 
@@ -40,7 +40,7 @@ export function Controls({
         variant={focusMode ? 'default' : 'outline'}
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
-        <Maximize2
+        <Maximize
           className={focusMode ? 'text-green-500 dark:text-green-400' : ''}
         />
       </Button>

@@ -23,6 +23,7 @@ export function Flashcard({
       )}
     >
       <Card
+        tabIndex={-1}
         className={cn(
           'transition-all duration-300',
           'hover:shadow-md',
@@ -30,10 +31,8 @@ export function Flashcard({
           'min-h-[350px] sm:min-h-[400px] w-full max-w-4xl',
           'bg-card text-card-foreground',
           'flex items-center justify-center relative',
-          focusMode && 'mt-8 mb-10 sm:my-0',
-          isFlipped && 'ring-2 ring-primary/20',
-          isKnown && 'ring-2 ring-green-500/20',
-          !isKnown && isFlipped && 'ring-2 ring-red-500/20'
+          'focus:outline-none focus-visible:outline-none focus:ring-0',
+          focusMode && 'mt-8 mb-10 sm:my-0'
         )}
         onClick={onFlip}
         onTouchStart={onTouchStart}
