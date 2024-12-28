@@ -23,6 +23,8 @@ Live at [https://hskcards.app](https://hskcards.app)
 
 - <kbd>Space</kbd>: Flip card
 - <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate between cards
+- <kbd>1</kbd>-<kbd>6</kbd>: Switch HSK level
+- <kbd>f</kbd>: Toggle focus mode
 - <kbd>Esc</kbd>: Exit focus mode
 - Buttons also available
 

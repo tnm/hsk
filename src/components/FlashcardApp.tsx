@@ -133,6 +133,13 @@ export default function FlashcardApp() {
         setFocusMode(false);
       } else if (event.code === 'KeyF') {
         setFocusMode((prev) => !prev);
+      } else if (event.code.match(/^Digit[1-6]$/)) {
+        // Extract the number from the key code (e.g., 'Digit1' -> 1)
+        const level = parseInt(event.code.replace('Digit', ''));
+        setCurrentLevel(level);
+        setLoading(true);
+        setIsFlipped(false);
+        setCurrentCardIndex(0);
       }
     };
 
