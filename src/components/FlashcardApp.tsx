@@ -138,13 +138,19 @@ export default function FlashcardApp() {
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (['Space', 'ArrowLeft', 'ArrowRight', 'KeyJ', 'KeyK', 'KeyF', 'KeyD', 'KeyZ'].includes(event.code)) {
+      // Prevent space from focusing buttons
+      if (event.code === 'Space') {
+        event.preventDefault();
+        setIsFlipped((prev) => !prev);
+        return;
+      }
+
+      // Prevent default for other navigation keys
+      if (['ArrowLeft', 'ArrowRight', 'KeyJ', 'KeyK', 'KeyF', 'KeyD', 'KeyZ'].includes(event.code)) {
         event.preventDefault();
       }
 
-      if (event.code === 'Space') {
-        setIsFlipped((prev) => !prev);
-      } else if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
+      if (event.code === 'ArrowLeft' || event.code === 'KeyJ') {
         handlePreviousCard();
       } else if (event.code === 'ArrowRight' || event.code === 'KeyK') {
         handleNextCard();
