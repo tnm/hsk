@@ -21,6 +21,7 @@ export function Flashcard({
         focusMode &&
           'fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-sm z-50 p-4 sm:p-8 overflow-hidden'
       )}
+      style={focusMode ? { touchAction: 'none' } : undefined}
     >
       <Card
         tabIndex={-1}
@@ -38,6 +39,7 @@ export function Flashcard({
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
+        style={{ touchAction: 'none' }}
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (

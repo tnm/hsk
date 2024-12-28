@@ -11,27 +11,38 @@ export function useSwipeControls({
   onPrevious,
   minSwipeDistance = 50,
 }: SwipeControlsProps) {
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
 
   const onTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
     setTouchEnd(null);
-    setTouchStart(e.touches[0].clientX);
+    setTouchStart({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    });
   };
 
   const onTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
-    setTouchEnd(e.touches[0].clientX);
+    setTouchEnd({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    });
   };
 
   const onTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!touchStart || !touchEnd) return;
 
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
+    const horizontalDistance = touchStart.x - touchEnd.x;
+    const verticalDistance = Math.abs(touchStart.y - touchEnd.y);
+
+    // Ignore swipe if vertical movement is too large
+    if (verticalDistance > 50) return;
+
+    const isLeftSwipe = horizontalDistance > minSwipeDistance;
+    const isRightSwipe = horizontalDistance < -minSwipeDistance;
 
     if (isLeftSwipe) {
       onPrevious();
@@ -45,5 +56,6 @@ export function useSwipeControls({
     onTouchStart,
     onTouchMove,
     onTouchEnd,
+    style: { touchAction: 'none' } as const,  // Prevent default touch behaviors
   };
 }
