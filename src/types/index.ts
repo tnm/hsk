@@ -33,6 +33,7 @@ export interface FlashcardProps extends TouchHandlers {
   isKnown?: boolean;
   onMarkKnown?: () => void;
   onMarkUnknown?: () => void;
+  justMarkedKnown?: boolean;
 }
 
 export interface DeckSelectorProps {
@@ -45,9 +46,11 @@ export interface ControlsProps {
   shuffleMode: boolean;
   darkMode: boolean;
   focusMode: boolean;
+  unknownOnly: boolean;
   onShuffleToggle: () => void;
   onDarkModeToggle: () => void;
   onFocusModeToggle: () => void;
+  onUnknownOnlyToggle: () => void;
 }
 
 export interface NavigationProps {
@@ -55,6 +58,9 @@ export interface NavigationProps {
   onNext: () => void;
   currentIndex: number;
   totalCards: number;
+  knownCount: number;
+  onClearLearned: () => void;
+  justMarkedKnown?: boolean;
 }
 
 export interface FocusControlsProps extends NavigationProps {

@@ -335,6 +335,9 @@ export default function FlashcardApp() {
             onExit={() => setFocusMode(false)}
             currentIndex={currentCardIndex}
             totalCards={visibleDeck.length}
+            knownCount={knownCards.size}
+            onClearLearned={() => setKnownCards(new Set())}
+            justMarkedKnown={justMarkedKnown}
           />
         )}
       </div>
