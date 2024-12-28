@@ -48,13 +48,13 @@ export function useKeyboardControls({
       }
 
       const keyActionMap: Record<string, (() => void) | undefined> = {
-        'ArrowLeft': onPrevious,
-        'KeyJ': onPrevious,
-        'ArrowRight': onNext,
-        'KeyK': onNext,
-        'KeyF': onMarkKnown,
-        'KeyD': onMarkUnknown,
-        'KeyZ': onToggleFocus,
+        ArrowLeft: onPrevious,
+        KeyJ: onPrevious,
+        ArrowRight: onNext,
+        KeyK: onNext,
+        KeyF: onMarkKnown,
+        KeyD: onMarkUnknown,
+        KeyZ: onToggleFocus,
       };
 
       // Special cases handled separately

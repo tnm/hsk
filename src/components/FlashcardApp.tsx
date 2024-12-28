@@ -203,7 +203,7 @@ export default function FlashcardApp() {
             <Header />
             <DeckSelector
               currentDeckId={currentDeckId}
-              onDeckChange={(deckId) => {
+              onDeckChange={(deckId: string) => {
                 setCurrentDeckId(deckId);
                 setLoading(true);
                 setIsFlipped(false);
