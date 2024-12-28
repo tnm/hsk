@@ -48,7 +48,6 @@ export default function FlashcardApp() {
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
   const [unknownOnly, setUnknownOnly] = useState(false);
-  const [justMarkedKnown, setJustMarkedKnown] = useState(false);
 
   const minSwipeDistance = 50;
 
@@ -123,8 +122,7 @@ export default function FlashcardApp() {
   const handleMarkKnown = useCallback(() => {
     const card = visibleDeck[currentCardIndex];
     if (card) {
-      setKnownCards((prev) => new Set(prev).add(card.front));
-      setJustMarkedKnown(true);
+      setKnownCards(prev => new Set(prev).add(card.front));
       handleNextCard();
     }
   }, [currentCardIndex, visibleDeck, handleNextCard]);
@@ -234,13 +232,6 @@ export default function FlashcardApp() {
     );
   }, [knownCards, currentDeckId]);
 
-  useEffect(() => {
-    if (justMarkedKnown) {
-      const timer = setTimeout(() => setJustMarkedKnown(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [justMarkedKnown]);
-
   if (showLoading) {
     const currentDeck = availableDecks.find(
       (d): d is Deck => d.id === currentDeckId
@@ -312,7 +303,6 @@ export default function FlashcardApp() {
           isKnown={knownCards.has(currentCard?.front)}
           onMarkKnown={handleMarkKnown}
           onMarkUnknown={handleMarkUnknown}
-          justMarkedKnown={justMarkedKnown}
         />
 
         {!focusMode && (
@@ -337,7 +327,6 @@ export default function FlashcardApp() {
             totalCards={visibleDeck.length}
             knownCount={knownCards.size}
             onClearLearned={() => setKnownCards(new Set())}
-            justMarkedKnown={justMarkedKnown}
           />
         )}
       </div>

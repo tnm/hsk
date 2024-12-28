@@ -33,7 +33,6 @@ export interface FlashcardProps extends TouchHandlers {
   isKnown?: boolean;
   onMarkKnown?: () => void;
   onMarkUnknown?: () => void;
-  justMarkedKnown?: boolean;
 }
 
 export interface DeckSelectorProps {
@@ -60,7 +59,6 @@ export interface NavigationProps {
   totalCards: number;
   knownCount: number;
   onClearLearned: () => void;
-  justMarkedKnown?: boolean;
 }
 
 export interface FocusControlsProps extends NavigationProps {

@@ -10,7 +10,6 @@ export function Navigation({
   totalCards,
   knownCount,
   onClearLearned,
-  justMarkedKnown,
 }: NavigationProps) {
   return (
     <div className="mt-8 flex justify-between items-center px-2 sm:px-4">
