@@ -70,7 +70,7 @@ export function Controls({
               : 'text-gray-700 dark:text-gray-300'
           }
         />
-        {filterUnlearned ? 'Unlearned Only' : 'Show All'}
+        {filterUnlearned ? 'Unlearned Only' : 'All'}
       </Button>
     </div>
   );

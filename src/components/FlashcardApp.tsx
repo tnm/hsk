@@ -140,8 +140,12 @@ export default function FlashcardApp() {
     const card = currentDeck[currentCardIndex];
     if (card) {
       setKnownCards((prev) => new Set(prev).add(card.front));
+      if (filterUnlearned) {
+        const nextIndex = findNextUnlearned(currentCardIndex);
+        setCurrentCardIndex(nextIndex);
+      }
     }
-  }, [currentCardIndex, currentDeck]);
+  }, [currentCardIndex, currentDeck, filterUnlearned, findNextUnlearned]);
 
   const handleMarkUnknown = useCallback(() => {
     const card = currentDeck[currentCardIndex];
@@ -161,13 +165,14 @@ export default function FlashcardApp() {
   }, []);
 
   const handleFilterToggle = useCallback(() => {
-    setFilterUnlearned((prev) => {
-      if (!prev && currentCard && knownCards.has(currentCard.front)) {
-        setCurrentCardIndex(findNextUnlearned(currentCardIndex));
-      }
-      return !prev;
-    });
-  }, [currentCard, knownCards, currentCardIndex, findNextUnlearned]);
+    if (!filterUnlearned && currentCard && knownCards.has(currentCard.front)) {
+      const nextIndex = findNextUnlearned(currentCardIndex);
+      setCurrentCardIndex(nextIndex);
+      setFilterUnlearned(true);
+    } else {
+      setFilterUnlearned(prev => !prev);
+    }
+  }, [currentCard, knownCards, currentCardIndex, findNextUnlearned, filterUnlearned]);
 
   useKeyboardControls({
     onFlip: () => setIsFlipped((prev) => !prev),
