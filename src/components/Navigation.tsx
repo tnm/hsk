@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { NavigationProps } from '@/types';
 import { Button } from './ui/button';
+import { useState, useEffect } from 'react';
 
 export function Navigation({
   onPrevious,
@@ -10,6 +11,14 @@ export function Navigation({
   filterUnlearned,
   unlearnedCount,
 }: NavigationProps) {
+  const [isFlashing, setIsFlashing] = useState(false);
+
+  useEffect(() => {
+    setIsFlashing(true);
+    const timer = setTimeout(() => setIsFlashing(false), 800);
+    return () => clearTimeout(timer);
+  }, [unlearnedCount]);
+
   return (
     <div className="mt-8 flex justify-between items-center px-2 sm:px-4">
       <Button
@@ -24,7 +33,11 @@ export function Navigation({
       <div className="text-sm sm:text-lg text-foreground/80 font-medium select-none">
         {currentIndex + 1}/{totalCards}
         {filterUnlearned && unlearnedCount !== undefined && (
-          <span className="ml-2 text-xs text-primary">
+          <span
+            className={`ml-2 text-xs ${
+              isFlashing ? 'text-green-500 dark:text-green-400' : 'text-primary'
+            } transition-colors duration-500`}
+          >
             ({unlearnedCount} unlearned)
           </span>
         )}
