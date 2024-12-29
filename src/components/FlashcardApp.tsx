@@ -190,16 +190,30 @@ export default function FlashcardApp() {
     filterUnlearned,
   ]);
 
-  useHotkeys('space', () => setIsFlipped(prev => !prev), []);
-  useHotkeys(['right', 'l'], handleNextCard, [handleNextCard]);
-  useHotkeys(['left', 'h'], handlePreviousCard, [handlePreviousCard]);
-  useHotkeys(['down', 'j'], handleNextCard, [handleNextCard]);
-  useHotkeys(['up', 'k'], handlePreviousCard, [handlePreviousCard]);
-  useHotkeys('k', handleMarkKnown, [handleMarkKnown]);
-  useHotkeys('u', handleMarkUnknown, [handleMarkUnknown]);
-  useHotkeys('f', () => setFocusMode(prev => !prev), []);
+  useHotkeys('space', (e) => {
+    e.preventDefault();
+    setIsFlipped(prev => !prev)
+  }, []);
+
+  useHotkeys(['right', 'k'], handleNextCard, [handleNextCard]);
+  useHotkeys(['left', 'j'], handlePreviousCard, [handlePreviousCard]);
+  useHotkeys(['down'], handleNextCard, [handleNextCard]);
+  useHotkeys(['up'], handlePreviousCard, [handlePreviousCard]);
+
+  useHotkeys('f', () => {
+    const card = currentDeck[currentCardIndex];
+    if (card) {
+      if (knownCards.has(card.front)) {
+        handleMarkUnknown();
+      } else {
+        handleMarkKnown();
+      }
+    }
+  }, [currentDeck, currentCardIndex, knownCards, handleMarkKnown, handleMarkUnknown]);
+
+  useHotkeys('z', () => setFocusMode(prev => !prev), []);
+  useHotkeys('u', handleFilterToggle, [handleFilterToggle]);
   useHotkeys('escape', () => focusMode && setFocusMode(false), [focusMode]);
-  useHotkeys('t', handleFilterToggle, [handleFilterToggle]);
   useHotkeys('1,2,3,4,5,6', (e) => {
     const level = parseInt(e.key);
     if (level >= 1 && level <= 6) {
