@@ -12,18 +12,18 @@ import { DeckSelector } from './DeckSelector';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 
 const availableDecks: Deck[] = [
-  { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
-  { id: 'hsk2', name: 'HSK 2', path: '/data/hsk2.csv' },
-  { id: 'hsk3', name: 'HSK 3', path: '/data/hsk3.csv' },
-  { id: 'hsk4', name: 'HSK 4', path: '/data/hsk4.csv' },
-  { id: 'hsk5', name: 'HSK 5', path: '/data/hsk5.csv' },
-  { id: 'hsk6', name: 'HSK 6', path: '/data/hsk6.csv' },
+  { id: '1', name: 'HSK 1', path: '/data/hsk1.csv' },
+  { id: '2', name: 'HSK 2', path: '/data/hsk2.csv' },
+  { id: '3', name: 'HSK 3', path: '/data/hsk3.csv' },
+  { id: '4', name: 'HSK 4', path: '/data/hsk4.csv' },
+  { id: '5', name: 'HSK 5', path: '/data/hsk5.csv' },
+  { id: '6', name: 'HSK 6', path: '/data/hsk6.csv' },
 ];
 
 export default function FlashcardApp() {
   const [currentDeckId, setCurrentDeckId] = useState<string>(() => {
     const stored = localStorage.getItem('currentDeck');
-    return stored || 'hsk1';
+    return stored || '1';
   });
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -167,7 +167,7 @@ export default function FlashcardApp() {
   }, [currentCardIndex, currentDeck, knownCards]);
 
   const handleChangeDeck = useCallback((level: number) => {
-    const deckId = `hsk${level}`;
+    const deckId = `${level}`;
     setCurrentDeckId(deckId);
     setLoading(true);
     setIsFlipped(false);
@@ -253,8 +253,8 @@ export default function FlashcardApp() {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="text-xl text-red-500 mb-4">{error.message}</div>
-        <Button onClick={() => setCurrentDeckId('hsk1')}>
-          Return to HSK 1
+        <Button onClick={() => setCurrentDeckId('1')}>
+          Return to First Deck
         </Button>
       </div>
     );
