@@ -129,12 +129,22 @@ export default function FlashcardApp() {
       const prevIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(prevIndex);
     } else {
-      setCurrentCardIndex(
-        (prev) => (prev - 1 + currentDeck.length) % currentDeck.length
-      );
+      if (filterUnlearned) {
+        setCurrentCardIndex(findNextUnlearned(currentCardIndex, -1));
+      } else {
+        setCurrentCardIndex(
+          (prev) => (prev - 1 + currentDeck.length) % currentDeck.length
+        );
+      }
     }
     setIsFlipped(false);
-  }, [shuffleMode, currentDeck.length]);
+  }, [
+    shuffleMode,
+    currentDeck.length,
+    filterUnlearned,
+    findNextUnlearned,
+    currentCardIndex,
+  ]);
 
   const handleMarkKnown = useCallback(() => {
     const card = currentDeck[currentCardIndex];
