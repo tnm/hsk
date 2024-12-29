@@ -9,7 +9,7 @@ import { Header } from './Header';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
 import { DeckSelector } from './DeckSelector';
-import { useKeyboardControls } from '@/hooks/useKeyboardControls';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const availableDecks: Deck[] = [
   { id: '1', name: 'HSK 1', path: '/data/hsk1.csv' },
@@ -190,20 +190,22 @@ export default function FlashcardApp() {
     filterUnlearned,
   ]);
 
-  useKeyboardControls({
-    onFlip: () => setIsFlipped((prev) => !prev),
-    onNext: handleNextCard,
-    onPrevious: handlePreviousCard,
-    onMarkKnown: handleMarkKnown,
-    onMarkUnknown: handleMarkUnknown,
-    onToggleFocus: () => setFocusMode((prev) => !prev),
-    onChangeDeck: handleChangeDeck,
-    focusMode,
-    onExitFocus: () => setFocusMode(false),
-    currentCard,
-    knownCards,
-    onFilterUnlearnedToggle: handleFilterToggle,
-  });
+  useHotkeys('space', () => setIsFlipped(prev => !prev), []);
+  useHotkeys(['right', 'l'], handleNextCard, [handleNextCard]);
+  useHotkeys(['left', 'h'], handlePreviousCard, [handlePreviousCard]);
+  useHotkeys(['down', 'j'], handleNextCard, [handleNextCard]);
+  useHotkeys(['up', 'k'], handlePreviousCard, [handlePreviousCard]);
+  useHotkeys('k', handleMarkKnown, [handleMarkKnown]);
+  useHotkeys('u', handleMarkUnknown, [handleMarkUnknown]);
+  useHotkeys('f', () => setFocusMode(prev => !prev), []);
+  useHotkeys('escape', () => focusMode && setFocusMode(false), [focusMode]);
+  useHotkeys('t', handleFilterToggle, [handleFilterToggle]);
+  useHotkeys('1,2,3,4,5,6', (e) => {
+    const level = parseInt(e.key);
+    if (level >= 1 && level <= 6) {
+      handleChangeDeck(level);
+    }
+  }, [handleChangeDeck]);
 
   useEffect(() => {
     if (darkMode) {
