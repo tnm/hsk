@@ -2,11 +2,22 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { NavigationProps } from '@/types';
 import { Button } from './ui/button';
 
+interface NavigationProps {
+  onPrevious: () => void;
+  onNext: () => void;
+  currentIndex: number;
+  totalCards: number;
+  filterUnlearned?: boolean;
+  unlearnedCount?: number;
+}
+
 export function Navigation({
   onPrevious,
   onNext,
   currentIndex,
   totalCards,
+  filterUnlearned,
+  unlearnedCount,
 }: NavigationProps) {
   return (
     <div className="mt-8 flex justify-between items-center px-2 sm:px-4">
@@ -21,6 +32,11 @@ export function Navigation({
 
       <div className="text-sm sm:text-lg text-foreground/80 font-medium select-none">
         {currentIndex + 1}/{totalCards}
+        {filterUnlearned && unlearnedCount !== undefined && (
+          <span className="ml-2 text-xs text-primary">
+            ({unlearnedCount} unlearned)
+          </span>
+        )}
       </div>
 
       <Button

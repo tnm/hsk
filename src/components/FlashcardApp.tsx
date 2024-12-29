@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import _ from 'lodash';
 import type { Card, Deck } from '@/types';
 import { csvParser } from '@/services/deckParsers';
 import { Controls } from './Controls';
@@ -45,6 +44,7 @@ export default function FlashcardApp() {
     const stored = localStorage.getItem(`knownCards-${currentDeckId}`);
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
+  const [filterUnlearned, setFilterUnlearned] = useState<boolean>(false);
 
   const currentCard = useMemo(() => {
     return currentDeck[currentCardIndex];
@@ -88,15 +88,41 @@ export default function FlashcardApp() {
     }
   };
 
+  const findNextUnlearned = useCallback(
+    (startIndex: number, direction: 1 | -1 = 1) => {
+      let index = startIndex;
+      for (let i = 0; i < currentDeck.length; i++) {
+        index = (index + direction + currentDeck.length) % currentDeck.length;
+        if (!knownCards.has(currentDeck[index].front)) {
+          return index;
+        }
+      }
+      return startIndex;
+    },
+    [currentDeck, knownCards]
+  );
+
   const handleNextCard = useCallback(() => {
     if (shuffleMode) {
       const nextIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(nextIndex);
     } else {
-      setCurrentCardIndex((prev) => (prev + 1) % currentDeck.length);
+      const nextIndex = (currentCardIndex + 1) % currentDeck.length;
+      if (filterUnlearned && knownCards.has(currentDeck[nextIndex].front)) {
+        setCurrentCardIndex(findNextUnlearned(nextIndex));
+      } else {
+        setCurrentCardIndex(nextIndex);
+      }
     }
     setIsFlipped(false);
-  }, [shuffleMode, currentDeck.length]);
+  }, [
+    shuffleMode,
+    filterUnlearned,
+    knownCards,
+    findNextUnlearned,
+    currentCardIndex,
+    currentDeck,
+  ]);
 
   const handlePreviousCard = useCallback(() => {
     if (shuffleMode) {
@@ -134,6 +160,15 @@ export default function FlashcardApp() {
     setCurrentCardIndex(0);
   }, []);
 
+  const handleFilterToggle = useCallback(() => {
+    setFilterUnlearned((prev) => {
+      if (!prev && currentCard && knownCards.has(currentCard.front)) {
+        setCurrentCardIndex(findNextUnlearned(currentCardIndex));
+      }
+      return !prev;
+    });
+  }, [currentCard, knownCards, currentCardIndex, findNextUnlearned]);
+
   useKeyboardControls({
     onFlip: () => setIsFlipped((prev) => !prev),
     onNext: handleNextCard,
@@ -146,6 +181,7 @@ export default function FlashcardApp() {
     onExitFocus: () => setFocusMode(false),
     currentCard,
     knownCards,
+    onFilterUnlearnedToggle: handleFilterToggle,
   });
 
   useEffect(() => {
@@ -175,6 +211,10 @@ export default function FlashcardApp() {
     }
     return () => clearTimeout(timeout);
   }, [loading]);
+
+  const unlearnedCount = useMemo(() => {
+    return currentDeck.filter((card) => !knownCards.has(card.front)).length;
+  }, [currentDeck, knownCards]);
 
   if (showLoading) {
     const currentDeck = availableDecks.find(
@@ -219,9 +259,11 @@ export default function FlashcardApp() {
               shuffleMode={shuffleMode}
               darkMode={darkMode}
               focusMode={focusMode}
+              filterUnlearned={filterUnlearned}
               onShuffleToggle={shuffleDeck}
               onDarkModeToggle={() => setDarkMode((prev) => !prev)}
               onFocusModeToggle={() => setFocusMode((prev) => !prev)}
+              onFilterUnlearnedToggle={handleFilterToggle}
             />
           </header>
         )}
@@ -248,6 +290,8 @@ export default function FlashcardApp() {
             onNext={handleNextCard}
             currentIndex={currentCardIndex}
             totalCards={currentDeck.length}
+            filterUnlearned={filterUnlearned}
+            unlearnedCount={unlearnedCount}
           />
         )}
 
