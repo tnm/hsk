@@ -1,3 +1,4 @@
+import { Card } from '@/types';
 import { useCallback, useEffect } from 'react';
 
 interface KeyboardControlsProps {
@@ -57,7 +58,7 @@ export function useKeyboardControls({
         KeyK: onNext,
         KeyF: () => {
           // Toggle between known/unknown
-          if (knownCards.has(currentCard?.front)) {
+          if (currentCard && knownCards.has(currentCard.front)) {
             onMarkUnknown();
           } else {
             onMarkKnown();
