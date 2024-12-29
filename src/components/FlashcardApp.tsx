@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import _ from 'lodash';
 import type { Card, Deck } from '@/types';
 import { csvParser } from '@/services/deckParsers';
@@ -46,7 +46,9 @@ export default function FlashcardApp() {
     return stored ? new Set(JSON.parse(stored)) : new Set();
   });
 
-  const currentCard = currentDeck[currentCardIndex];
+  const currentCard = useMemo(() => {
+    return currentDeck[currentCardIndex];
+  }, [currentDeck, currentCardIndex]);
 
   const loadDeck = useCallback(async () => {
     try {
@@ -78,8 +80,10 @@ export default function FlashcardApp() {
   const shuffleDeck = () => {
     setShuffleMode((prev) => !prev);
     if (!shuffleMode) {
-      setCurrentDeck(_.shuffle([...currentDeck]));
-      setCurrentCardIndex(0);
+      const shuffledDeck = _.shuffle([...currentDeck]);
+      const randomIndex = Math.floor(Math.random() * shuffledDeck.length);
+      setCurrentDeck(shuffledDeck);
+      setCurrentCardIndex(randomIndex);
       setIsFlipped(false);
     } else {
       loadDeck();
