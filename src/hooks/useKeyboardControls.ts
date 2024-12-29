@@ -10,6 +10,8 @@ interface KeyboardControlsProps {
   onChangeDeck: (level: number) => void;
   focusMode: boolean;
   onExitFocus: () => void;
+  currentCard?: Card;
+  knownCards: Set<string>;
 }
 
 export function useKeyboardControls({
@@ -22,6 +24,8 @@ export function useKeyboardControls({
   onChangeDeck,
   focusMode,
   onExitFocus,
+  currentCard,
+  knownCards,
 }: KeyboardControlsProps) {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -40,7 +44,6 @@ export function useKeyboardControls({
           'KeyJ',
           'KeyK',
           'KeyF',
-          'KeyD',
           'KeyZ',
         ].includes(event.code)
       ) {
@@ -52,8 +55,14 @@ export function useKeyboardControls({
         KeyJ: onPrevious,
         ArrowRight: onNext,
         KeyK: onNext,
-        KeyF: onMarkKnown,
-        KeyD: onMarkUnknown,
+        KeyF: () => {
+          // Toggle between known/unknown
+          if (knownCards.has(currentCard?.front)) {
+            onMarkUnknown();
+          } else {
+            onMarkKnown();
+          }
+        },
         KeyZ: onToggleFocus,
       };
 
@@ -78,6 +87,8 @@ export function useKeyboardControls({
       onChangeDeck,
       focusMode,
       onExitFocus,
+      currentCard,
+      knownCards,
     ]
   );
 

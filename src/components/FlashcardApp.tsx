@@ -144,6 +144,8 @@ export default function FlashcardApp() {
     onChangeDeck: handleChangeDeck,
     focusMode,
     onExitFocus: () => setFocusMode(false),
+    currentCard,
+    knownCards,
   });
 
   useEffect(() => {
