@@ -47,9 +47,11 @@ export interface ControlsProps {
   shuffleMode: boolean;
   darkMode: boolean;
   focusMode: boolean;
+  filterUnlearned: boolean;
   onShuffleToggle: () => void;
   onDarkModeToggle: () => void;
   onFocusModeToggle: () => void;
+  onFilterUnlearnedToggle: () => void;
 }
 
 export interface NavigationProps {
@@ -57,6 +59,8 @@ export interface NavigationProps {
   onNext: () => void;
   currentIndex: number;
   totalCards: number;
+  filterUnlearned?: boolean;
+  unlearnedCount?: number;
 }
 
 export interface FocusControlsProps extends NavigationProps {

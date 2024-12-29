@@ -2,17 +2,6 @@ import { Shuffle, Sun, Moon, Maximize, BookOpen } from 'lucide-react';
 import { ControlsProps } from '@/types';
 import { Button } from './ui/button';
 
-interface ControlsProps {
-  shuffleMode: boolean;
-  darkMode: boolean;
-  focusMode: boolean;
-  filterUnlearned: boolean;
-  onShuffleToggle: () => void;
-  onDarkModeToggle: () => void;
-  onFocusModeToggle: () => void;
-  onFilterUnlearnedToggle: () => void;
-}
-
 export function Controls({
   shuffleMode,
   darkMode,

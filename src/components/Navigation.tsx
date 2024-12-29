@@ -2,15 +2,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { NavigationProps } from '@/types';
 import { Button } from './ui/button';
 
-interface NavigationProps {
-  onPrevious: () => void;
-  onNext: () => void;
-  currentIndex: number;
-  totalCards: number;
-  filterUnlearned?: boolean;
-  unlearnedCount?: number;
-}
-
 export function Navigation({
   onPrevious,
   onNext,

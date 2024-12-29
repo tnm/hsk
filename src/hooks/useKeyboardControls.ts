@@ -103,7 +103,16 @@ export function useKeyboardControls({
       // Prevent focus on any button when using keyboard shortcuts
       if (
         e.target instanceof HTMLButtonElement &&
-        ['Space', 'ArrowLeft', 'ArrowRight', 'KeyJ', 'KeyK', 'KeyF', 'KeyZ', 'KeyU'].includes(e.code)
+        [
+          'Space',
+          'ArrowLeft',
+          'ArrowRight',
+          'KeyJ',
+          'KeyK',
+          'KeyF',
+          'KeyZ',
+          'KeyU',
+        ].includes(e.code)
       ) {
         e.preventDefault();
       }

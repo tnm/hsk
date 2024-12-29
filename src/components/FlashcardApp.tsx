@@ -180,9 +180,15 @@ export default function FlashcardApp() {
       setCurrentCardIndex(nextIndex);
       setFilterUnlearned(true);
     } else {
-      setFilterUnlearned(prev => !prev);
+      setFilterUnlearned((prev) => !prev);
     }
-  }, [currentCard, knownCards, currentCardIndex, findNextUnlearned, filterUnlearned]);
+  }, [
+    currentCard,
+    knownCards,
+    currentCardIndex,
+    findNextUnlearned,
+    filterUnlearned,
+  ]);
 
   useKeyboardControls({
     onFlip: () => setIsFlipped((prev) => !prev),
