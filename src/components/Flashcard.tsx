@@ -50,9 +50,9 @@ export function Flashcard({
       >
         <div className="absolute top-3 right-3 flex items-center gap-2">
           {isKnown ? (
-            <div className="w-8 h-2 rounded-full bg-green-500/80 dark:bg-green-400/80" />
+            <div className="w-12 h-3 rounded-full bg-green-500/80 dark:bg-green-400/80" />
           ) : (
-            <div className="w-8 h-2 rounded-full bg-neutral-300 dark:bg-neutral-600" />
+            <div className="w-12 h-3 rounded-full bg-neutral-300 dark:bg-neutral-600" />
           )}
         </div>
 

@@ -88,8 +88,24 @@ export default function FlashcardApp() {
     }
   };
 
+  const unlearnedIndexes = useMemo(
+    () =>
+      currentDeck.reduce((acc, card, index) => {
+        if (!knownCards.has(card.front)) acc.push(index);
+        return acc;
+      }, [] as number[]),
+    [currentDeck, knownCards]
+  );
+
   const findNextUnlearned = useCallback(
     (startIndex: number, direction: 1 | -1 = 1) => {
+      if (shuffleMode) {
+        if (unlearnedIndexes.length === 0) return startIndex;
+        return unlearnedIndexes[
+          Math.floor(Math.random() * unlearnedIndexes.length)
+        ];
+      }
+
       let index = startIndex;
       for (let i = 0; i < currentDeck.length; i++) {
         index = (index + direction + currentDeck.length) % currentDeck.length;
@@ -99,7 +115,7 @@ export default function FlashcardApp() {
       }
       return startIndex;
     },
-    [currentDeck, knownCards]
+    [unlearnedIndexes, shuffleMode, currentDeck, knownCards]
   );
 
   const handleNextCard = useCallback(() => {
@@ -190,36 +206,54 @@ export default function FlashcardApp() {
     filterUnlearned,
   ]);
 
-  useHotkeys('space', (e) => {
-    e.preventDefault();
-    setIsFlipped(prev => !prev)
-  }, []);
+  useHotkeys(
+    'space',
+    (e) => {
+      e.preventDefault();
+      setIsFlipped((prev) => !prev);
+    },
+    []
+  );
 
   useHotkeys(['right', 'k'], handleNextCard, [handleNextCard]);
   useHotkeys(['left', 'j'], handlePreviousCard, [handlePreviousCard]);
   useHotkeys(['down'], handleNextCard, [handleNextCard]);
   useHotkeys(['up'], handlePreviousCard, [handlePreviousCard]);
 
-  useHotkeys('f', () => {
-    const card = currentDeck[currentCardIndex];
-    if (card) {
-      if (knownCards.has(card.front)) {
-        handleMarkUnknown();
-      } else {
-        handleMarkKnown();
+  useHotkeys(
+    'f',
+    () => {
+      const card = currentDeck[currentCardIndex];
+      if (card) {
+        if (knownCards.has(card.front)) {
+          handleMarkUnknown();
+        } else {
+          handleMarkKnown();
+        }
       }
-    }
-  }, [currentDeck, currentCardIndex, knownCards, handleMarkKnown, handleMarkUnknown]);
+    },
+    [
+      currentDeck,
+      currentCardIndex,
+      knownCards,
+      handleMarkKnown,
+      handleMarkUnknown,
+    ]
+  );
 
-  useHotkeys('z', () => setFocusMode(prev => !prev), []);
+  useHotkeys('z', () => setFocusMode((prev) => !prev), []);
   useHotkeys('u', handleFilterToggle, [handleFilterToggle]);
   useHotkeys('escape', () => focusMode && setFocusMode(false), [focusMode]);
-  useHotkeys('1,2,3,4,5,6', (e) => {
-    const level = parseInt(e.key);
-    if (level >= 1 && level <= 6) {
-      handleChangeDeck(level);
-    }
-  }, [handleChangeDeck]);
+  useHotkeys(
+    '1,2,3,4,5,6',
+    (e) => {
+      const level = parseInt(e.key);
+      if (level >= 1 && level <= 6) {
+        handleChangeDeck(level);
+      }
+    },
+    [handleChangeDeck]
+  );
 
   useEffect(() => {
     if (darkMode) {
@@ -250,8 +284,8 @@ export default function FlashcardApp() {
   }, [loading]);
 
   const unlearnedCount = useMemo(() => {
-    return currentDeck.filter((card) => !knownCards.has(card.front)).length;
-  }, [currentDeck, knownCards]);
+    return unlearnedIndexes.length;
+  }, [unlearnedIndexes]);
 
   if (showLoading) {
     const currentDeck = availableDecks.find(
