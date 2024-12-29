@@ -13,6 +13,7 @@ interface KeyboardControlsProps {
   onExitFocus: () => void;
   currentCard?: Card;
   knownCards: Set<string>;
+  onFilterUnlearnedToggle: () => void;
 }
 
 export function useKeyboardControls({
@@ -27,6 +28,7 @@ export function useKeyboardControls({
   onExitFocus,
   currentCard,
   knownCards,
+  onFilterUnlearnedToggle,
 }: KeyboardControlsProps) {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -46,6 +48,7 @@ export function useKeyboardControls({
           'KeyK',
           'KeyF',
           'KeyZ',
+          'KeyU',
         ].includes(event.code)
       ) {
         event.preventDefault();
@@ -65,6 +68,7 @@ export function useKeyboardControls({
           }
         },
         KeyZ: onToggleFocus,
+        KeyU: onFilterUnlearnedToggle,
       };
 
       // Special cases handled separately
@@ -90,12 +94,26 @@ export function useKeyboardControls({
       onExitFocus,
       currentCard,
       knownCards,
+      onFilterUnlearnedToggle,
     ]
   );
 
   useEffect(() => {
     const preventButtonFocus = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLButtonElement) {
+      // Prevent focus on any button when using keyboard shortcuts
+      if (
+        e.target instanceof HTMLButtonElement &&
+        [
+          'Space',
+          'ArrowLeft',
+          'ArrowRight',
+          'KeyJ',
+          'KeyK',
+          'KeyF',
+          'KeyZ',
+          'KeyU',
+        ].includes(e.code)
+      ) {
         e.preventDefault();
       }
     };

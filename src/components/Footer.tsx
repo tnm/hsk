@@ -9,7 +9,11 @@ export function Footer() {
               <code className="font-mono text-sm">j/k</code>: Navigate cards
             </li>
             <li>
-              <code className="font-mono text-sm">f</code>: Toggle learned/unlearned
+              <code className="font-mono text-sm">f</code>: Toggle
+              learned/unlearned
+            </li>
+            <li>
+              <code className="font-mono text-sm">u</code>: Show unlearned only
             </li>
             <li>
               <code className="font-mono text-sm">space</code>: Flip card

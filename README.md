@@ -26,6 +26,7 @@ Live at [https://hskcards.app](https://hskcards.app)
 - <kbd>←</kbd> <kbd>→</kbd> or <kbd>j</kbd> <kbd>k</kbd>: Navigate cards
 - <kbd>1</kbd>-<kbd>6</kbd>: Switch HSK level
 - <kbd>f</kbd>: Toggle learned/unlearned state
+- <kbd>u</kbd>: Show unlearned only
 - <kbd>z</kbd>: Toggle focus mode
 - <kbd>esc</kbd>: Exit focus mode
 

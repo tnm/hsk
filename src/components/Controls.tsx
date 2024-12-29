@@ -1,4 +1,4 @@
-import { Shuffle, Sun, Moon, Maximize } from 'lucide-react';
+import { Shuffle, Sun, Moon, Maximize, BookOpen } from 'lucide-react';
 import { ControlsProps } from '@/types';
 import { Button } from './ui/button';
 
@@ -6,15 +6,17 @@ export function Controls({
   shuffleMode,
   darkMode,
   focusMode,
+  filterUnlearned,
   onShuffleToggle,
   onDarkModeToggle,
   onFocusModeToggle,
+  onFilterUnlearnedToggle,
 }: ControlsProps) {
   return (
     <div className="flex justify-center gap-2">
       <Button
         onClick={onShuffleToggle}
-        variant={shuffleMode ? 'default' : 'secondary'}
+        variant={shuffleMode ? 'default' : 'outline'}
         className="flex items-center gap-2 px-4 py-2 rounded-full"
       >
         <Shuffle
@@ -43,6 +45,21 @@ export function Controls({
         <Maximize
           className={focusMode ? 'text-green-500 dark:text-green-400' : ''}
         />
+      </Button>
+
+      <Button
+        onClick={onFilterUnlearnedToggle}
+        variant={filterUnlearned ? 'default' : 'outline'}
+        className="flex items-center gap-2 px-4 py-2 rounded-full"
+      >
+        <BookOpen
+          className={
+            filterUnlearned
+              ? 'text-green-500 dark:text-green-400'
+              : 'text-gray-700 dark:text-gray-300'
+          }
+        />
+        {filterUnlearned ? 'Unlearned Only' : 'All'}
       </Button>
     </div>
   );
