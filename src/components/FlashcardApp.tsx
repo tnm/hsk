@@ -9,21 +9,21 @@ import { Header } from './Header';
 import { Navigation } from './Navigation';
 import { Button } from './ui/button';
 import { DeckSelector } from './DeckSelector';
-import { useKeyboardControls } from '@/hooks/useKeyboardControls';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const availableDecks: Deck[] = [
-  { id: 'hsk1', name: 'HSK 1', path: '/data/hsk1.csv' },
-  { id: 'hsk2', name: 'HSK 2', path: '/data/hsk2.csv' },
-  { id: 'hsk3', name: 'HSK 3', path: '/data/hsk3.csv' },
-  { id: 'hsk4', name: 'HSK 4', path: '/data/hsk4.csv' },
-  { id: 'hsk5', name: 'HSK 5', path: '/data/hsk5.csv' },
-  { id: 'hsk6', name: 'HSK 6', path: '/data/hsk6.csv' },
+  { id: '1', name: 'HSK 1', path: '/data/hsk1.csv' },
+  { id: '2', name: 'HSK 2', path: '/data/hsk2.csv' },
+  { id: '3', name: 'HSK 3', path: '/data/hsk3.csv' },
+  { id: '4', name: 'HSK 4', path: '/data/hsk4.csv' },
+  { id: '5', name: 'HSK 5', path: '/data/hsk5.csv' },
+  { id: '6', name: 'HSK 6', path: '/data/hsk6.csv' },
 ];
 
 export default function FlashcardApp() {
   const [currentDeckId, setCurrentDeckId] = useState<string>(() => {
     const stored = localStorage.getItem('currentDeck');
-    return stored || 'hsk1';
+    return stored || '1';
   });
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -167,7 +167,7 @@ export default function FlashcardApp() {
   }, [currentCardIndex, currentDeck, knownCards]);
 
   const handleChangeDeck = useCallback((level: number) => {
-    const deckId = `hsk${level}`;
+    const deckId = `${level}`;
     setCurrentDeckId(deckId);
     setLoading(true);
     setIsFlipped(false);
@@ -190,20 +190,36 @@ export default function FlashcardApp() {
     filterUnlearned,
   ]);
 
-  useKeyboardControls({
-    onFlip: () => setIsFlipped((prev) => !prev),
-    onNext: handleNextCard,
-    onPrevious: handlePreviousCard,
-    onMarkKnown: handleMarkKnown,
-    onMarkUnknown: handleMarkUnknown,
-    onToggleFocus: () => setFocusMode((prev) => !prev),
-    onChangeDeck: handleChangeDeck,
-    focusMode,
-    onExitFocus: () => setFocusMode(false),
-    currentCard,
-    knownCards,
-    onFilterUnlearnedToggle: handleFilterToggle,
-  });
+  useHotkeys('space', (e) => {
+    e.preventDefault();
+    setIsFlipped(prev => !prev)
+  }, []);
+
+  useHotkeys(['right', 'k'], handleNextCard, [handleNextCard]);
+  useHotkeys(['left', 'j'], handlePreviousCard, [handlePreviousCard]);
+  useHotkeys(['down'], handleNextCard, [handleNextCard]);
+  useHotkeys(['up'], handlePreviousCard, [handlePreviousCard]);
+
+  useHotkeys('f', () => {
+    const card = currentDeck[currentCardIndex];
+    if (card) {
+      if (knownCards.has(card.front)) {
+        handleMarkUnknown();
+      } else {
+        handleMarkKnown();
+      }
+    }
+  }, [currentDeck, currentCardIndex, knownCards, handleMarkKnown, handleMarkUnknown]);
+
+  useHotkeys('z', () => setFocusMode(prev => !prev), []);
+  useHotkeys('u', handleFilterToggle, [handleFilterToggle]);
+  useHotkeys('escape', () => focusMode && setFocusMode(false), [focusMode]);
+  useHotkeys('1,2,3,4,5,6', (e) => {
+    const level = parseInt(e.key);
+    if (level >= 1 && level <= 6) {
+      handleChangeDeck(level);
+    }
+  }, [handleChangeDeck]);
 
   useEffect(() => {
     if (darkMode) {
@@ -253,8 +269,8 @@ export default function FlashcardApp() {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <div className="text-xl text-red-500 mb-4">{error.message}</div>
-        <Button onClick={() => setCurrentDeckId('hsk1')}>
-          Return to HSK 1
+        <Button onClick={() => setCurrentDeckId('1')}>
+          Return to First Deck
         </Button>
       </div>
     );
