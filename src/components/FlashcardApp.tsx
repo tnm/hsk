@@ -80,9 +80,7 @@ export default function FlashcardApp() {
   const shuffleDeck = () => {
     setShuffleMode((prev) => !prev);
     if (!shuffleMode) {
-      const shuffledDeck = _.shuffle([...currentDeck]);
-      const randomIndex = Math.floor(Math.random() * shuffledDeck.length);
-      setCurrentDeck(shuffledDeck);
+      const randomIndex = Math.floor(Math.random() * currentDeck.length);
       setCurrentCardIndex(randomIndex);
       setIsFlipped(false);
     } else {
