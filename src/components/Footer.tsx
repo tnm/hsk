@@ -35,7 +35,7 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="https://github.com/tnm/flashcards"
+                href="https://github.com/tnm/hsk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-primary/80 underline"
